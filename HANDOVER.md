@@ -1,6 +1,6 @@
 # Credit Card Wizard — handover for CMS / backend integration
 
-This is a **static, front-end-only** build of the Emirates NBD credit card wizard.
+This is a **static, front-end-only** build of the credit card wizard.
 All wording, options and card details are plain HTML in `index.html`.
 The JavaScript never builds content and never calculates which card to show:
 it only shows, hides and reorders the HTML that is already on the page, and runs the animations.
@@ -10,7 +10,7 @@ There are two things you need to connect:
 1. **Card and page content** → render it into the HTML (section 3).
 2. **The form submission** → call your API from one function (section 5).
 
-Embedding it in an existing page (e.g. emiratesnbd.com) is covered in section 4; a second brand in section 6.
+Embedding it in an existing page is covered in section 4; a second brand in section 6.
 
 ---
 
@@ -179,7 +179,7 @@ If you add an answer, add its tile, its `pick:` subtitle line and its pill.
 
 ---
 
-## 4. Embedding in another page (e.g. emiratesnbd.com)
+## 4. Embedding in another page
 
 The wizard is built to sit inside an existing site without touching it:
 
@@ -272,7 +272,7 @@ The rest of the CSS and the JS contain no colour or font values of their own, so
    - card images (`images/cards/`, `images/*.webp`) and the per-card hero colours (`data-theme-kind` / `data-theme-cols` in the catalogue)
    - the 3D icons (`images/icons/`, `images/icons-light/`), which are coloured in the brand palette
    - the success tick animation `animations/success.js` (export a new Lottie JSON in the brand colours and paste it in place of the object in that file)
-   - brand wording in `index.html`: page `<title>`, card names, `data-share-*` texts, the "Emirates NBD" search placeholder
+   - brand wording in `index.html`: page `<title>`, card names, `data-share-*` texts, the bank name in the search placeholder
 
 **Not tokenised on purpose:** layout sizes and spacing, and a few one-off radii (2-10px, 14px, 20px, 32-34px), which are geometry the brands share. The UAE flag colours next to the mobile number are the national flag, not brand colours.
 

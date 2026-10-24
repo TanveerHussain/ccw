@@ -1,6 +1,6 @@
 # Credit Card Wizard
 
-A guided "find your card" wizard for Emirates NBD credit cards. The customer answers a few questions about spending and benefits, compares three recommended cards, picks one and leaves their details.
+A guided "find your card" wizard for credit cards. The customer answers a few questions about spending and benefits, compares three recommended cards, picks one and leaves their details.
 
 Plain HTML, CSS and JavaScript. No framework, no build step, nothing to install.
 
