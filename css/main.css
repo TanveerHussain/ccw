@@ -1,0 +1,1278 @@
+/* Credit card wizard - all styles. Section 1: design tokens. Section 2: wizard styles. */
+
+/* =====================================================================
+   DESIGN TOKENS - the only section to change for another brand.
+   Everything below this section uses these tokens only; it has no colour or font values of its own.
+   Tokens live on .ccw (the wizard wrapper), not :root, so they never clash with the host page's own variables.
+
+   1. PALETTE      raw colours, by role. Each colour has a channel token (-rgb) so translucent
+                   versions follow it: rgb(var(--c-primary-794-rgb) / .15).
+                   The number is darkness: 000 = white ... 999 = black.
+   2. TYPOGRAPHY   the font stack (also update the Google Fonts <link> in index.html).
+   3. SHAPE        corner radii of the main shapes.
+   4. SEMANTIC     names the components use (--navy, --ink, --surface ...). They point at the palette.
+   5. SHARE IMAGE  colours of the shareable application image (drawn by js/thanks.js).
+
+   Brand assets that are NOT tokens: logo (images/logo-*.svg), card images, the 3D icons
+   (images/icons/), the success tick animation (animations/success.js) and the per-card hero
+   colours (data-theme-cols in index.html).
+   ===================================================================== */
+.ccw,.ccw-page{
+  /* ---------- 1. PALETTE ---------- */
+  /* PRIMARY - the deep brand colour (Emirates NBD navy): stage, headings, buttons, text on light */
+  --c-primary-629-rgb: 31 74 158;          --c-primary-629: rgb(var(--c-primary-629-rgb));  /* #1f4a9e */
+  --c-primary-631-rgb: 66 85 122;          --c-primary-631: rgb(var(--c-primary-631-rgb));  /* #42557a */
+  --c-primary-684-rgb: 18 61 143;          --c-primary-684: rgb(var(--c-primary-684-rgb));  /* #123d8f */
+  --c-primary-690-rgb: 18 60 140;          --c-primary-690: rgb(var(--c-primary-690-rgb));  /* #123c8c */
+  --c-primary-720-rgb: 19 59 124;          --c-primary-720: rgb(var(--c-primary-720-rgb));  /* #133b7c */
+  --c-primary-724-rgb: 51 64 90;           --c-primary-724: rgb(var(--c-primary-724-rgb));  /* #33405a */
+  --c-primary-725-rgb: 58 65 82;           --c-primary-725: rgb(var(--c-primary-725-rgb));  /* #3a4152 */
+  --c-primary-727-rgb: 20 52 119;          --c-primary-727: rgb(var(--c-primary-727-rgb));  /* #143477 */
+  --c-primary-745-rgb: 43 58 87;           --c-primary-745: rgb(var(--c-primary-745-rgb));  /* #2b3a57 */
+  --c-primary-794-rgb: 11 43 94;           --c-primary-794: rgb(var(--c-primary-794-rgb));  /* #0b2b5e */
+  --c-primary-818-rgb: 11 33 82;           --c-primary-818: rgb(var(--c-primary-818-rgb));  /* #0b2152 */
+  --c-primary-839-rgb: 28 37 54;           --c-primary-839: rgb(var(--c-primary-839-rgb));  /* #1c2536 */
+  --c-primary-843-rgb: 16 32 64;           --c-primary-843: rgb(var(--c-primary-843-rgb));  /* #102040 */
+  --c-primary-847-rgb: 7 36 71;            --c-primary-847: rgb(var(--c-primary-847-rgb));  /* #072447 */
+  --c-primary-853-rgb: 11 29 64;           --c-primary-853: rgb(var(--c-primary-853-rgb));  /* #0b1d40 */
+  --c-primary-861-rgb: 7 29 64;            --c-primary-861: rgb(var(--c-primary-861-rgb));  /* #071d40 */
+  --c-primary-867-rgb: 10 26 58;           --c-primary-867: rgb(var(--c-primary-867-rgb));  /* #0a1a3a */
+  --c-primary-884-rgb: 7 22 52;            --c-primary-884: rgb(var(--c-primary-884-rgb));  /* #071634 */
+  --c-primary-904-rgb: 6 18 43;            --c-primary-904: rgb(var(--c-primary-904-rgb));  /* #06122b */
+  --c-primary-908-rgb: 3 14 44;            --c-primary-908: rgb(var(--c-primary-908-rgb));  /* #030e2c */
+  --c-primary-912-rgb: 5 16 40;            --c-primary-912: rgb(var(--c-primary-912-rgb));  /* #051028 */
+  --c-primary-922-rgb: 0 10 40;            --c-primary-922: rgb(var(--c-primary-922-rgb));  /* #000a28 */
+  --c-primary-929-rgb: 2 10 34;            --c-primary-929: rgb(var(--c-primary-929-rgb));  /* #020a22 */
+  --c-primary-941-rgb: 0 8 30;             --c-primary-941: rgb(var(--c-primary-941-rgb));  /* #00081e */
+  --c-primary-943-rgb: 3 10 26;            --c-primary-943: rgb(var(--c-primary-943-rgb));  /* #030a1a */
+
+  /* ACCENT - the bright brand colour (Emirates NBD blue): selection, links, glows, focus */
+  --c-accent-025-rgb: 243 246 254;         --c-accent-025: rgb(var(--c-accent-025-rgb));  /* #f3f6fe */
+  --c-accent-026-rgb: 242 247 255;         --c-accent-026: rgb(var(--c-accent-026-rgb));  /* #f2f7ff */
+  --c-accent-033-rgb: 238 244 255;         --c-accent-033: rgb(var(--c-accent-033-rgb));  /* #eef4ff */
+  --c-accent-034-rgb: 242 245 251;         --c-accent-034: rgb(var(--c-accent-034-rgb));  /* #f2f5fb */
+  --c-accent-037-rgb: 238 243 253;         --c-accent-037: rgb(var(--c-accent-037-rgb));  /* #eef3fd */
+  --c-accent-041-rgb: 234 241 255;         --c-accent-041: rgb(var(--c-accent-041-rgb));  /* #eaf1ff */
+  --c-accent-047-rgb: 238 242 248;         --c-accent-047: rgb(var(--c-accent-047-rgb));  /* #eef2f8 */
+  --c-accent-049-rgb: 230 238 255;         --c-accent-049: rgb(var(--c-accent-049-rgb));  /* #e6eeff */
+  --c-accent-050-rgb: 232 240 253;         --c-accent-050: rgb(var(--c-accent-050-rgb));  /* #e8f0fd */
+  --c-accent-051-rgb: 232 239 252;         --c-accent-051: rgb(var(--c-accent-051-rgb));  /* #e8effc */
+  --c-accent-053-rgb: 234 240 249;         --c-accent-053: rgb(var(--c-accent-053-rgb));  /* #eaf0f9 */
+  --c-accent-054-rgb: 232 233 251;         --c-accent-054: rgb(var(--c-accent-054-rgb));  /* #e8e9fb */
+  --c-accent-055-rgb: 235 240 248;         --c-accent-055: rgb(var(--c-accent-055-rgb));  /* #ebf0f8 */
+  --c-accent-057-rgb: 227 236 254;         --c-accent-057: rgb(var(--c-accent-057-rgb));  /* #e3ecfe */
+  --c-accent-058-rgb: 238 240 243;         --c-accent-058: rgb(var(--c-accent-058-rgb));  /* #eef0f3 */
+  --c-accent-059-rgb: 234 234 246;         --c-accent-059: rgb(var(--c-accent-059-rgb));  /* #eaeaf6 */
+  --c-accent-065-rgb: 226 233 251;         --c-accent-065: rgb(var(--c-accent-065-rgb));  /* #e2e9fb */
+  --c-accent-066-rgb: 226 234 251;         --c-accent-066: rgb(var(--c-accent-066-rgb));  /* #e2eafb */
+  --c-accent-069-rgb: 230 236 245;         --c-accent-069: rgb(var(--c-accent-069-rgb));  /* #e6ecf5 */
+  --c-accent-071-rgb: 219 231 255;         --c-accent-071: rgb(var(--c-accent-071-rgb));  /* #dbe7ff */
+  --c-accent-073-rgb: 230 235 243;         --c-accent-073: rgb(var(--c-accent-073-rgb));  /* #e6ebf3 */
+  --c-accent-076-rgb: 230 234 241;         --c-accent-076: rgb(var(--c-accent-076-rgb));  /* #e6eaf1 */
+  --c-accent-078-rgb: 227 233 243;         --c-accent-078: rgb(var(--c-accent-078-rgb));  /* #e3e9f3 */
+  --c-accent-082-rgb: 224 237 244;         --c-accent-082: rgb(var(--c-accent-082-rgb));  /* #e0edf4 */
+  --c-accent-083-rgb: 225 232 243;         --c-accent-083: rgb(var(--c-accent-083-rgb));  /* #e1e8f3 */
+  --c-accent-094-rgb: 207 224 255;         --c-accent-094: rgb(var(--c-accent-094-rgb));  /* #cfe0ff */
+  --c-accent-096-rgb: 219 228 242;         --c-accent-096: rgb(var(--c-accent-096-rgb));  /* #dbe4f2 */
+  --c-accent-122-rgb: 201 220 247;         --c-accent-122: rgb(var(--c-accent-122-rgb));  /* #c9dcf7 */
+  --c-accent-167-rgb: 170 200 255;         --c-accent-167: rgb(var(--c-accent-167-rgb));  /* #aac8ff */
+  --c-accent-182-rgb: 185 203 232;         --c-accent-182: rgb(var(--c-accent-182-rgb));  /* #b9cbe8 */
+  --c-accent-206-rgb: 150 185 255;         --c-accent-206: rgb(var(--c-accent-206-rgb));  /* #96b9ff */
+  --c-accent-207-rgb: 150 190 255;         --c-accent-207: rgb(var(--c-accent-207-rgb));  /* #96beff */
+  --c-accent-225-rgb: 140 175 255;         --c-accent-225: rgb(var(--c-accent-225-rgb));  /* #8cafff */
+  --c-accent-249-rgb: 143 178 240;         --c-accent-249: rgb(var(--c-accent-249-rgb));  /* #8fb2f0 */
+  --c-accent-251-rgb: 127 176 255;         --c-accent-251: rgb(var(--c-accent-251-rgb));  /* #7fb0ff */
+  --c-accent-265-rgb: 120 170 255;         --c-accent-265: rgb(var(--c-accent-265-rgb));  /* #78aaff */
+  --c-accent-266-rgb: 120 165 255;         --c-accent-266: rgb(var(--c-accent-266-rgb));  /* #78a5ff */
+  --c-accent-267-rgb: 120 190 255;         --c-accent-267: rgb(var(--c-accent-267-rgb));  /* #78beff */
+  --c-accent-284-rgb: 110 205 255;         --c-accent-284: rgb(var(--c-accent-284-rgb));  /* #6ecdff */
+  --c-accent-347-rgb: 78 140 255;          --c-accent-347: rgb(var(--c-accent-347-rgb));  /* #4e8cff */
+  --c-accent-416-rgb: 58 116 240;          --c-accent-416: rgb(var(--c-accent-416-rgb));  /* #3a74f0 */
+  --c-accent-424-rgb: 39 101 255;          --c-accent-424: rgb(var(--c-accent-424-rgb));  /* #2765ff */
+  --c-accent-500-rgb: 107 122 148;         --c-accent-500: rgb(var(--c-accent-500-rgb));  /* #6b7a94 */
+  --c-accent-512-rgb: 22 104 227;          --c-accent-512: rgb(var(--c-accent-512-rgb));  /* #1668e3 */
+  --c-accent-535-rgb: 36 87 201;           --c-accent-535: rgb(var(--c-accent-535-rgb));  /* #2457c9 */
+  --c-accent-541-rgb: 26 95 208;           --c-accent-541: rgb(var(--c-accent-541-rgb));  /* #1a5fd0 */
+  --c-accent-559-rgb: 29 79 196;           --c-accent-559: rgb(var(--c-accent-559-rgb));  /* #1d4fc4 */
+
+  /* NEUTRAL - greys and tinted whites for text, lines and surfaces */
+  --c-neutral-018-rgb: 247 246 255;        --c-neutral-018: rgb(var(--c-neutral-018-rgb));  /* #f7f6ff */
+  --c-neutral-019-rgb: 246 249 255;        --c-neutral-019: rgb(var(--c-neutral-019-rgb));  /* #f6f9ff */
+  --c-neutral-020-rgb: 248 248 252;        --c-neutral-020: rgb(var(--c-neutral-020-rgb));  /* #f8f8fc */
+  --c-neutral-021-rgb: 246 249 254;        --c-neutral-021: rgb(var(--c-neutral-021-rgb));  /* #f6f9fe */
+  --c-neutral-022-rgb: 244 248 255;        --c-neutral-022: rgb(var(--c-neutral-022-rgb));  /* #f4f8ff */
+  --c-neutral-023-rgb: 247 249 252;        --c-neutral-023: rgb(var(--c-neutral-023-rgb));  /* #f7f9fc */
+  --c-neutral-024-rgb: 245 248 253;        --c-neutral-024: rgb(var(--c-neutral-024-rgb));  /* #f5f8fd */
+  --c-neutral-033-rgb: 242 248 251;        --c-neutral-033: rgb(var(--c-neutral-033-rgb));  /* #f2f8fb */
+  --c-neutral-049-rgb: 241 242 244;        --c-neutral-049: rgb(var(--c-neutral-049-rgb));  /* #f1f2f4 */
+  --c-neutral-539-rgb: 107 116 128;        --c-neutral-539: rgb(var(--c-neutral-539-rgb));  /* #6b7480 */
+  --c-neutral-557-rgb: 100 110 126;        --c-neutral-557: rgb(var(--c-neutral-557-rgb));  /* #646e7e */
+  --c-neutral-582-rgb: 97 105 116;         --c-neutral-582: rgb(var(--c-neutral-582-rgb));  /* #616974 */
+  --c-neutral-602-rgb: 91 100 112;         --c-neutral-602: rgb(var(--c-neutral-602-rgb));  /* #5b6470 */
+  --c-neutral-665-rgb: 74 83 97;           --c-neutral-665: rgb(var(--c-neutral-665-rgb));  /* #4a5361 */
+  --c-neutral-782-rgb: 48 54 63;           --c-neutral-782: rgb(var(--c-neutral-782-rgb));  /* #30363f */
+
+  /* WHITE */
+  --c-white-rgb: 255 255 255;              --c-white: rgb(var(--c-white-rgb));  /* #ffffff */
+
+  /* BLACK */
+  --c-black-rgb: 0 0 0;                    --c-black: rgb(var(--c-black-rgb));  /* #000000 */
+
+  /* DANGER - error messages */
+  --c-danger-504-rgb: 194 59 59;           --c-danger-504: rgb(var(--c-danger-504-rgb));  /* #c23b3b */
+  --c-danger-529-rgb: 200 40 50;           --c-danger-529: rgb(var(--c-danger-529-rgb));  /* #c82832 */
+
+  /* SUCCESS - confirmation / recommended badge */
+  --c-success-720-rgb: 21 122 73;          --c-success-720: rgb(var(--c-success-720-rgb));  /* #157a49 */
+
+  /* GLOW (decorative light on the card stage) */
+  --c-glow-violet-225-rgb: 160 140 255;    --c-glow-violet-225: rgb(var(--c-glow-violet-225-rgb));  /* #a08cff */
+
+  /* GLOW (decorative, warm) */
+  --c-glow-gold-245-rgb: 245 205 140;      --c-glow-gold-245: rgb(var(--c-glow-gold-245-rgb));  /* #f5cd8c */
+  --c-glow-gold-384-rgb: 222 172 92;       --c-glow-gold-384: rgb(var(--c-glow-gold-384-rgb));  /* #deac5c */
+  --c-glow-gold-863-rgb: 46 36 24;         --c-glow-gold-863: rgb(var(--c-glow-gold-863-rgb));  /* #2e2418 */
+  --c-glow-gold-924-rgb: 26 20 13;         --c-glow-gold-924: rgb(var(--c-glow-gold-924-rgb));  /* #1a140d */
+  --c-glow-gold-969-rgb: 10 8 6;           --c-glow-gold-969: rgb(var(--c-glow-gold-969-rgb));  /* #0a0806 */
+
+  /* ---------- 2. TYPOGRAPHY ---------- */
+  --font-sans:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+
+  /* ---------- 3. SHAPE ---------- */
+  --radius-control:12px;  /* buttons, inputs, small controls */
+  --radius-card:16px;     /* cards and panels */
+  --radius-tile:18px;     /* answer tiles, benefit tiles */
+  --radius-sheet:22px;    /* sheets and large panels */
+  --radius-pill:999px;    /* pills and capsule buttons */
+
+  /* ---------- 4. SEMANTIC + layout (used by main.css) ---------- */
+  --navy:var(--c-primary-794); --navy-deep:var(--c-primary-861);
+  --blue:var(--c-accent-512); --blue-soft:var(--c-accent-050); --blue-line:var(--c-accent-122);
+  --ink:var(--c-primary-839); --ink-2:var(--c-primary-631); --muted:var(--c-neutral-602); --hint:var(--c-neutral-582);
+  --surface:var(--c-white); --sheet:var(--c-neutral-049); --field-line:var(--c-accent-096); --r-md:var(--radius-card); --r-pill:var(--radius-pill);
+  --shadow-chip:0 1px 2px rgb(var(--c-primary-843-rgb) / .05),0 1px 1px rgb(var(--c-primary-843-rgb) / .04);
+  --shadow-btn:0 8px 20px rgb(var(--c-primary-794-rgb) / .22);
+  --shadow-rail:0 2px 24px rgb(var(--c-primary-794-rgb) / .07);
+  --focus:var(--c-accent-541);
+  --ease-out:cubic-bezier(.2,.75,.2,1);
+  --ease-glide:cubic-bezier(.65,0,.25,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  /* cobalt stage */
+  --hero-w:46%;
+  --cw:420px; --u:46px; --ds:1;
+  /* results banner: primary navy with soft cobalt light (top-left glow, faint bottom-right bloom) */
+  --band:radial-gradient(60% 140% at 12% -10%,rgb(var(--c-accent-424-rgb) / .55) 0%,rgb(var(--c-accent-424-rgb) / 0) 62%),
+    radial-gradient(50% 120% at 100% 110%,rgb(var(--c-accent-512-rgb) / .32) 0%,rgb(var(--c-accent-512-rgb) / 0) 60%),
+    linear-gradient(165deg,var(--c-primary-684) 0%,var(--c-primary-794) 46%,var(--c-primary-861) 100%);
+  /* results (Clarity Table) grid + washes */
+  --cols:minmax(150px,.78fr) repeat(3,minmax(0,1.32fr));
+  --gutter:34px; --zebra:var(--c-neutral-023); --rec-wash:var(--c-accent-026); --hair:var(--c-accent-076);
+  --pad:max(var(--gutter),calc((100% - 1160px) / 2 + var(--gutter)));
+
+  /* ---------- 5. SHARE IMAGE ---------- */
+  --share-ink-rgb:var(--c-white-rgb);          /* text and rim on the share image */
+  --share-base:#05070c;                       /* darkest colour at the bottom of the share image */
+  --share-card-shadow:rgba(0,6,24,.75);       /* shadow under the card on the share image */
+  --share-logo-w:230px;                        /* logo width on the share image (the logo file is data-share-logo in index.html) */
+}
+
+/* =====================================================================
+   WIZARD STYLES
+   Every rule is scoped to .ccw (the wizard wrapper), so nothing here reaches the host page.
+   The STANDALONE PAGE section at the end styles index.html's own <body class="ccw-page">; it does
+   nothing on another site (e.g. emiratesnbd.com), because that class only exists on the demo page.
+   ===================================================================== */
+.ccw{font-family:var(--font-sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+.ccw,.ccw *,.ccw *::before,.ccw *::after{box-sizing:border-box}
+
+
+.ccw img{max-width:100%;display:block}
+.ccw button{font-family:inherit;-webkit-tap-highlight-color:transparent}
+/* visible keyboard focus for every interactive element */
+.ccw a:focus-visible,.ccw button:focus-visible,.ccw select:focus-visible,.ccw input:focus-visible,.ccw [tabindex]:focus-visible,.ccw [role="option"]:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.ccw .btn-navy:focus-visible{outline-offset:3px}
+
+/* =========================================================
+   SHELL - cobalt stage + white sheet
+   ========================================================= */
+.ccw .frame{min-height:100vh;padding:8px}
+.ccw .sheet{position:relative;background:var(--surface);border-radius:20px;height:calc(100vh - 16px);min-height:620px;
+  display:flex;flex-direction:row;overflow:hidden;box-shadow:var(--shadow-rail)}
+
+/* CARD STAGE (hero) */
+.ccw .hero{position:relative;flex:0 0 var(--hero-w);overflow:hidden;color:var(--c-white);isolation:isolate;
+  /* Midnight Horizon: near-black navy, soft spotlight above the deck; the cobalt horizon glow lives on .hero__floor */
+  background:
+    radial-gradient(45% 38% at 50% 30%,rgb(var(--c-accent-167-rgb) / .16) 0%,rgb(var(--c-accent-167-rgb) / 0) 70%),
+    linear-gradient(180deg,var(--c-primary-867) 0%,var(--c-primary-904) 55%,var(--c-primary-943) 100%)}
+.ccw .hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+  background:repeating-radial-gradient(circle at 50% 118%,rgb(var(--c-white-rgb) / .07) 0 1px,transparent 1px 56px);
+  -webkit-mask-image:linear-gradient(180deg,transparent 8%,var(--c-black) 60%);mask-image:linear-gradient(180deg,transparent 8%,var(--c-black) 60%)}
+.ccw .hero__floor{position:absolute;left:0;right:0;bottom:0;height:47%;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgb(var(--c-accent-424-rgb) / .16) 0%,rgb(var(--c-accent-424-rgb) / 0) 60%)}
+.ccw .hero__floor::before{content:"";position:absolute;left:6%;right:6%;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgb(var(--c-accent-265-rgb) / .65) 30%,rgb(var(--c-accent-265-rgb) / .65) 70%,transparent)}
+/* cobalt horizon glow, centred on the horizon line at every hero height */
+.ccw .hero__floor::after{content:"";position:absolute;left:-35%;right:-35%;top:-72.5%;height:145%;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(var(--c-accent-424-rgb) / .55) 0%,rgb(var(--c-accent-424-rgb) / 0) 70%)}
+.ccw .bloom{position:absolute;left:50%;top:40%;width:760px;height:760px;margin:-380px 0 0 -380px;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(var(--c-accent-266-rgb) / .26),rgb(var(--c-accent-424-rgb) / .1) 45%,transparent 72%);will-change:transform}
+
+.ccw .scene{position:absolute;left:0;right:0;top:0;bottom:150px;perspective:1600px;perspective-origin:50% 40%;opacity:0;transition:opacity .7s ease}
+.ccw .scene.is-ready{opacity:1}
+.ccw .deck{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;
+  transform:scale(var(--ds));transition:transform .7s var(--ease-out)}
+.ccw .rig{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;animation:ccw-sway 14s ease-in-out infinite}
+@keyframes ccw-sway{0%,100%{transform:rotateY(-2deg) rotateX(.5deg)}50%{transform:rotateY(2deg) rotateX(-1deg)}}
+@keyframes ccw-sway-m{0%,100%{transform:rotateY(-6deg) rotateX(2deg)}50%{transform:rotateY(6deg) rotateX(-2.5deg)}}
+.ccw .stack{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;
+  transform:translate3d(calc(var(--u) * -.4),calc(var(--u) * .2),0) rotateX(10deg) rotateY(16deg);will-change:transform}
+.ccw .ccard{position:absolute;left:calc(var(--cw) / -2);top:calc(var(--cw) / -3.17);width:var(--cw);aspect-ratio:1.585/1;
+  transform-style:preserve-3d;transition:transform .78s var(--ease-glide),opacity .5s ease}
+.ccw .ccard__float{position:absolute;inset:0;transform-style:preserve-3d;animation:ccw-float 7s ease-in-out infinite}
+.ccw .ccard[data-card="skywards"] .ccard__float{animation-delay:-2.3s}
+.ccw .ccard[data-card="marriott"] .ccard__float{animation-delay:-4.6s}
+@keyframes ccw-float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-7px,0)}}
+.ccw .ccard__face{position:absolute;inset:0;border-radius:3.2% / 5.05%;overflow:hidden;
+  box-shadow:0 34px 60px -26px rgb(var(--c-primary-929-rgb) / .75),0 14px 26px -12px rgb(var(--c-primary-929-rgb) / .45),0 0 0 1px rgb(var(--c-white-rgb) / .06)}
+.ccw .ccard__face img{width:100%;height:100%;object-fit:cover;transition:opacity .3s ease}
+.ccw .ccard__face::after{content:"";position:absolute;inset:0;background:var(--c-primary-794);opacity:0;transition:opacity .6s ease;pointer-events:none}
+.ccw .ccard[data-pos="1"] .ccard__face::after{opacity:.22}
+.ccw .ccard[data-pos="2"] .ccard__face::after{opacity:.4}
+.ccw .sheen{position:absolute;left:-50%;top:-50%;width:200%;height:200%;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,rgb(var(--c-white-rgb) / .24) 0%,rgb(var(--c-white-rgb) / .08) 14%,rgb(var(--c-white-rgb) / 0) 32%);
+  transform:translate3d(var(--lx,8%),var(--ly,-10%),0)}
+@media (hover:none){.ccw .sheen{animation:ccw-sheen 14s ease-in-out infinite}}
+@keyframes ccw-sheen{0%,100%{transform:translate3d(18%,-6%,0)}50%{transform:translate3d(-14%,-16%,0)}}
+.ccw .glint{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(104deg,transparent 38%,rgb(var(--c-white-rgb) / .42) 50%,transparent 62%);transform:translate3d(-110%,0,0)}
+.ccw .ccard.is-glint .glint{animation:ccw-glint 1.1s var(--ease-out) .55s both}
+@keyframes ccw-glint{0%{opacity:1;transform:translate3d(-110%,0,0)}100%{opacity:1;transform:translate3d(110%,0,0)}}
+/* pick reaction on Steps 1-4: the deck lifts and a light sweep cascades front to back (no reorder, no reveal) */
+.ccw .ccard.is-sweep .glint{animation:ccw-glint .9s var(--ease-out) both}
+.ccw .ccard[data-pos="1"].is-sweep .glint{animation-delay:.09s}
+.ccw .ccard[data-pos="2"].is-sweep .glint{animation-delay:.18s}
+/* deck positions (front first) */
+.ccw .ccard[data-pos="0"]{transform:translate3d(calc(var(--u) * -.6),calc(var(--u) * .9),calc(var(--u) * 1.2)) rotateZ(-4deg)}
+.ccw .ccard[data-pos="1"]{transform:translate3d(calc(var(--u) * .4),calc(var(--u) * -.25),calc(var(--u) * -.9)) rotateZ(1deg)}
+.ccw .ccard[data-pos="2"]{transform:translate3d(calc(var(--u) * 1.4),calc(var(--u) * -1.4),calc(var(--u) * -3)) rotateZ(6deg)}
+.ccw .ccard[data-pos="out"]{transform:translate3d(calc(var(--u) * -3.1),calc(var(--u) * -.2),calc(var(--u) * 2.6)) rotateZ(-11deg);
+  transition-duration:.42s;transition-timing-function:var(--ease-out)}
+/* solo: one card centre stage (about, contact, thanks) */
+.ccw .stack.is-solo .ccard[data-pos="0"]{transform:translate3d(calc(var(--u) * .4),calc(var(--u) * -.2),calc(var(--u) * 1.2)) rotateZ(-3deg)}
+.ccw .stack.is-solo .ccard:not([data-pos="0"]){opacity:0;transform:translate3d(calc(var(--u) * .4),calc(var(--u) * -.2),calc(var(--u) * -2.4)) rotateZ(-3deg)}
+.ccw .contact{position:absolute;left:50%;top:50%;width:calc(var(--cw) * 1.25);height:calc(var(--cw) * .22);
+  margin-left:calc(var(--cw) * -.68);margin-top:calc(var(--cw) * .5);pointer-events:none;
+  background:radial-gradient(closest-side,rgb(var(--c-primary-908-rgb) / .42),rgb(var(--c-primary-908-rgb) / 0));animation:ccw-contact 7s ease-in-out infinite}
+@keyframes ccw-contact{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.94);opacity:.8}}
+
+/* live match line */
+.ccw .match{position:absolute;left:56px;right:56px;bottom:44px;z-index:3}
+.ccw .match[hidden]{display:none}
+.ccw .match__k{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--c-accent-094);margin:0 0 10px}
+.ccw .match__k::before{display:none;content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--c-accent-251);box-shadow:0 0 0 4px rgb(var(--c-accent-251-rgb) / .22)}
+.ccw .match__name{font-size:22px;font-weight:600;letter-spacing:-.01em;line-height:1.25;margin:0;color:var(--c-white)}
+.ccw .match__name sup{font-size:.55em}
+.ccw .match__sub{font-size:14px;line-height:1.5;color:rgb(var(--c-white-rgb) / .86);margin:8px 0 0;max-width:440px}
+.ccw .nm-short{display:none}
+.ccw .picks{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.ccw .picks li{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--c-white);
+  padding:6px 12px 6px 6px;border-radius:var(--r-pill);background:rgb(var(--c-white-rgb) / .12);border:1px solid rgb(var(--c-white-rgb) / .22);
+  animation:ccw-pin .4s var(--ease-out) both}
+.ccw .picks b{width:20px;height:20px;border-radius:50%;background:var(--c-white);color:var(--navy);font-size:11px;font-weight:700;display:grid;place-items:center}
+.ccw .picks b svg{width:12px;height:12px}
+@keyframes ccw-pin{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
+.ccw .match.is-swap .match__name{animation:ccw-swap .5s var(--ease-out) both}
+@keyframes ccw-swap{from{opacity:0;transform:translate3d(0,8px,0)}to{opacity:1;transform:none}}
+
+/* step meta (progress + step name) */
+.ccw .wtop{flex:none;padding:30px 64px 0}
+/* step indicator removed per Ram (2026-10-07); markup kept so render() can still update it harmlessly */
+.ccw .pmeta{display:none!important;align-items:center;gap:14px;max-width:640px;margin:0 auto;min-height:24px}
+.ccw .progress{display:flex;gap:6px;width:200px;flex:none}
+.ccw .progress i{flex:1;height:5px;border-radius:var(--r-pill);background:var(--c-accent-078);transition:background .35s ease}
+.ccw .progress i.on{background:var(--navy)}
+.ccw .stepind{font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--muted);white-space:nowrap}
+
+/* thin top progress (wide / results mode only) */
+.ccw .progress-top{position:absolute;top:6px;left:12px;right:12px;height:3px;z-index:8;display:none;gap:4px}
+.ccw .progress-top i{flex:1;border-radius:var(--r-pill);background:rgb(var(--c-white-rgb) / .28);transition:background .35s ease}
+.ccw .progress-top i.on{background:var(--c-white)}
+
+/* close X + mobile back */
+.ccw .closeb{position:absolute;right:22px;top:20px;z-index:14;width:44px;height:44px;border:0;border-radius:var(--radius-control);
+  background:none;color:var(--c-primary-724);cursor:pointer;display:grid;place-items:center;transition:opacity .16s ease}
+/* icon-only buttons: no plate; the 44px box stays as the tap target */
+.ccw .closeb svg{width:22px;height:22px}
+.ccw .topback{position:absolute;left:12px;top:12px;z-index:14;width:44px;height:44px;border-radius:var(--radius-control);
+  border:0;background:none;color:var(--c-white);display:none;place-items:center;cursor:pointer;transition:opacity .16s ease}
+.ccw .topback svg{width:22px;height:22px}
+.ccw .topback:focus-visible{outline-color:var(--c-white)}
+
+/* WORK ZONE (white sheet) */
+.ccw .work{flex:1;min-width:0;display:flex;flex-direction:column;height:100%}
+.ccw .body{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;padding:0 64px}
+.ccw .screen{flex:1 0 auto;width:100%;max-width:640px;margin:0 auto;display:flex;flex-direction:column;animation:ccw-rise .4s var(--ease-out) both}
+/* opacity only: a transform here would trap the fixed mobile footer */
+@keyframes ccw-rise{from{opacity:0}to{opacity:1}}
+.ccw .screen__main{margin:auto 0;padding:28px 0 24px}
+.ccw .eyebrow{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin:0 0 14px}
+.ccw .stitle{font-size:42px;font-weight:500;letter-spacing:-.015em;line-height:1.1;color:var(--navy);margin:0}
+.ccw .stitle b{font-weight:600;color:var(--blue)}
+.ccw .ssub{font-size:16px;line-height:1.55;color:var(--ink-2);margin:14px 0 0}
+
+/* BENTO TILES (Steps 1-3): white tiles, 3D icon plate anchored bottom-right, decisive navy selected state.
+   Grid rows come from --row so each breakpoint sets one number; wide = 2 columns, tall = 2 rows. */
+.ccw .bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:var(--row,108px);gap:10px;margin:24px 0 0}
+.ccw .tile{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;width:100%;height:100%;min-width:0;padding:13px 14px;
+  background:linear-gradient(155deg,var(--t1,var(--c-white)) 0%,var(--t2,var(--c-accent-034)) 100%);border:1px solid rgb(var(--c-white-rgb) / .9);border-radius:var(--radius-tile);box-shadow:var(--shadow-chip);
+  font:600 15px/1.25 var(--font-sans);letter-spacing:-.005em;color:var(--navy);text-align:left;cursor:pointer;touch-action:manipulation;
+  transition:transform .35s var(--spring),box-shadow .25s ease,background-color .25s ease,border-color .25s ease,opacity .25s ease,color .25s ease;
+  animation:ccw-tilein .5s var(--ease-out) backwards;animation-delay:calc(var(--i,0) * 32ms + 60ms)}
+@keyframes ccw-tilein{from{opacity:0;transform:translate3d(0,10px,0)}}
+.ccw .tile:active{transform:scale(.97);transition-duration:.1s}
+.ccw .tile.dim:active{transform:scale(.99)}
+.ccw .tile__lbl{position:relative;z-index:2;display:block;max-width:100%}
+/* text flows around the ring: reserve its space on the first line only; a too-long word drops below it */
+.ccw .tile__lbl::before{content:"";float:right;width:28px;height:22px}
+/* the 3D icon sits directly on the tile (transparent cut-out, no plate); depth from a soft drop shadow */
+.ccw .tile{--icz:calc(var(--ic,64px) * 1.14)}
+.ccw .tile__ic{position:absolute;right:6px;bottom:6px;z-index:1;width:var(--icz);height:var(--icz);
+  filter:drop-shadow(0 8px 10px rgb(var(--c-primary-847-rgb) / .16));transform-origin:70% 70%;transition:transform .55s var(--ease-out),opacity .3s ease,filter .3s ease}
+/* micro-interactions (from the Bento variant): cursor spotlight + a soft tonal disc behind the icon */
+.ccw .tile::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;pointer-events:none;transition:opacity .3s ease;
+  background:radial-gradient(260px circle at var(--mx,70%) var(--my,30%),rgb(var(--c-white-rgb) / .9),transparent 62%)}
+.ccw .tile::after{content:"";position:absolute;z-index:0;pointer-events:none;width:calc(var(--icz) * 1.6);aspect-ratio:1;border-radius:50%;
+  right:calc(6px - var(--icz) * .3);bottom:calc(6px - var(--icz) * .3);
+  background:radial-gradient(closest-side,rgb(var(--c-white-rgb) / .85),rgb(var(--c-white-rgb) / 0));transition:transform .5s var(--ease-out),background .3s ease}
+/* gentle tonal variety across the grid (cool brand family) */
+.ccw .tile:nth-child(5n+1){--t1:var(--c-neutral-022);--t2:var(--c-accent-057)}
+.ccw .tile:nth-child(5n+2){--t1:var(--c-neutral-018);--t2:var(--c-accent-054)}
+.ccw .tile:nth-child(5n+3){--t1:var(--c-neutral-033);--t2:var(--c-accent-082)}
+.ccw .tile:nth-child(5n+4){--t1:var(--c-neutral-020);--t2:var(--c-accent-059)}
+.ccw .tile:nth-child(5n+5){--t1:var(--c-accent-025);--t2:var(--c-accent-065)}
+/* selected marker: white check badge top-right, big "Pick n" numeral bottom-left */
+.ccw .tile__rank{position:absolute;top:10px;right:10px;z-index:3;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  border:1.5px solid rgb(var(--c-primary-794-rgb) / .24);background:rgb(var(--c-white-rgb) / .6);color:var(--c-white);transition:all .3s var(--ease-out)}
+.ccw .tile__rank svg{width:13px;height:13px;opacity:0;transform:scale(.4);transition:opacity .25s ease,transform .35s var(--spring)}
+.ccw .tile.is-on{color:var(--c-white);border-color:transparent;
+  background:radial-gradient(90% 80% at 100% 0%,rgb(var(--c-accent-424-rgb) / .42) 0%,rgb(var(--c-accent-424-rgb) / 0) 60%),
+    linear-gradient(155deg,var(--c-primary-720) 0%,var(--c-primary-794) 50%,var(--c-primary-847) 100%);
+  box-shadow:0 16px 30px -14px rgb(var(--c-primary-847-rgb) / .6),inset 0 1px 0 rgb(var(--c-white-rgb) / .12)}
+.ccw .tile.is-on .tile__rank{border-color:var(--c-accent-424);background:var(--c-accent-424);box-shadow:0 0 0 4px rgb(var(--c-accent-424-rgb) / .28)}
+.ccw .tile.is-on .tile__rank svg{opacity:1;transform:none}
+/* on the navy selected tile the icon swaps to its baked silver twin; only a faint cool glow remains behind it */
+.ccw .tile.is-on::after{transform:scale(.8);background:radial-gradient(closest-side,rgb(var(--c-accent-206-rgb) / .22) 0%,rgb(var(--c-accent-225-rgb) / 0) 100%)}
+.ccw .tile.is-on::before{background:radial-gradient(260px circle at var(--mx,70%) var(--my,30%),rgb(var(--c-accent-251-rgb) / .22),transparent 62%)}
+.ccw .tile__ic img{position:absolute;inset:0;width:100%;height:100%;transition:opacity .3s ease}
+.ccw .tile__ic .ic-lt{opacity:0}
+.ccw .tile.is-on .tile__ic{filter:drop-shadow(0 8px 14px rgb(var(--c-primary-941-rgb) / .4))}
+.ccw .tile.is-on .tile__ic .ic-lt{opacity:1}
+.ccw .tile.is-on .tile__ic .ic-dk{opacity:0}
+.ccw .tile.just-on{animation:ccw-tilepop .5s var(--spring)}
+@keyframes ccw-tilepop{0%{transform:scale(.95)}55%{transform:scale(1.03)}100%{transform:none}}
+.ccw .tile.dim{opacity:.55;cursor:not-allowed;box-shadow:none}
+.ccw .tile.dim .tile__ic{filter:grayscale(.6)}
+.ccw .tile.dim .tile__rank{opacity:.35}
+
+/* selection count */
+.ccw .count{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.ccw .count.is-nudge{animation:ccw-nudge .4s ease}
+@keyframes ccw-nudge{0%,100%{transform:none}25%{transform:translate3d(-4px,0,0)}75%{transform:translate3d(4px,0,0)}}
+/* count dashes removed per Ram; the "n of 3 selected" text stays */
+.ccw .pips{display:none!important;gap:5px}
+.ccw .pips i{width:22px;height:5px;border-radius:var(--r-pill);background:var(--c-accent-078);transition:background-color .25s ease}
+.ccw .pips i.on{background:var(--blue)}
+
+/* FIELDS */
+.ccw .form{margin:28px 0 0;text-align:left}
+.ccw .field + .field{margin-top:22px}
+.ccw .flabel{display:block;font-size:14px;font-weight:500;color:var(--c-primary-724);margin:0 0 8px}
+.ccw .input,.ccw .select{display:block;width:100%;min-height:56px;background:var(--c-white);border:1px solid var(--field-line);border-radius:var(--radius-control);
+  padding:16px 18px;font:500 16px/1.3 var(--font-sans);color:var(--navy);box-shadow:var(--shadow-chip);transition:border-color .16s ease,box-shadow .16s ease}
+.ccw .input::placeholder{color:var(--hint);font-weight:400}
+.ccw .input:focus,.ccw .select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgb(var(--c-accent-512-rgb) / .14)}
+.ccw .select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:44px;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5 7 7.5l6-6' stroke='%233a4152' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center}
+.ccw .select.is-empty{color:var(--hint)}
+.ccw .field__err{display:flex;align-items:center;gap:6px;margin:8px 2px 0;font-size:13px;font-weight:500;color:var(--c-danger-504)}
+.ccw .field__err::before{content:"";flex:none;width:14px;height:14px;border-radius:50%;
+  background:var(--c-danger-504) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M7 3.6v4.2' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3Ccircle cx='7' cy='10.4' r='1' fill='%23fff'/%3E%3C/svg%3E") center/14px no-repeat}
+.ccw .field--bad .input,.ccw .field--bad .select,.ccw .field--bad .combo__ctrl,.ccw .field--bad .pinput{border-color:var(--c-danger-504)}
+.ccw .pinput{display:flex;align-items:stretch;min-height:56px;border:1px solid var(--field-line);border-radius:var(--radius-control);overflow:hidden;
+  background:var(--c-white);box-shadow:var(--shadow-chip);transition:border-color .16s ease,box-shadow .16s ease}
+.ccw .pinput:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px rgb(var(--c-accent-512-rgb) / .14)}
+.ccw .pinput__pre{display:flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;background:var(--blue-soft);
+  border-right:1px solid var(--field-line);font:600 15px/1 var(--font-sans);color:var(--navy);white-space:nowrap;min-width:64px}
+.ccw .dh{display:inline-block;white-space:nowrap}
+/* CBUAE guideline: left of the numeral, same line, same height as the digits (cap height), baseline aligned, same colour, a clear gap, never super/subscript */
+.ccw .dh .dhs{display:inline-block;height:.71em;width:calc(.71em * 1000 / 870);margin-right:.14em;vertical-align:baseline;fill:currentColor}
+.ccw .pinput__pre .dhs{width:20px;height:17.4px;display:block;flex:none;color:var(--navy)}
+.ccw .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ccw .pinput__pre .flag{width:22px;height:22px;border-radius:50%;overflow:hidden;flex:none;display:block}
+.ccw .pinput input{flex:1;border:0;outline:none;padding:16px 18px;font:500 16px/1.3 var(--font-sans);
+  color:var(--navy);background:transparent;min-width:0}
+.ccw .pinput input:focus-visible{outline:none}
+.ccw .combo{position:relative}
+.ccw .combo__ctrl{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:56px;background:var(--c-white);
+  border:1px solid var(--field-line);border-radius:var(--radius-control);padding:16px 18px;font:500 16px/1.3 var(--font-sans);
+  color:var(--navy);cursor:pointer;text-align:left;box-shadow:var(--shadow-chip)}
+.ccw .combo__ctrl.is-empty{color:var(--hint);font-weight:400}
+.ccw .combo.is-open .combo__ctrl{border-color:var(--blue);box-shadow:0 0 0 4px rgb(var(--c-accent-512-rgb) / .14)}
+.ccw .combo__ctrl svg{width:14px;height:9px;flex:none;color:var(--c-primary-725);transition:transform .2s ease}
+.ccw .combo.is-open .combo__ctrl svg{transform:rotate(180deg)}
+.ccw .combo__pop{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:20;scroll-margin-bottom:112px;background:var(--c-white);border:1px solid var(--c-accent-058);
+  border-radius:14px;box-shadow:0 18px 40px rgb(var(--c-primary-843-rgb) / .16);padding:8px;display:none}
+.ccw .combo.is-open .combo__pop{display:block}
+.ccw .combo__search{width:100%;border:1px solid var(--field-line);border-radius:10px;padding:13px 12px;
+  font:500 15px/1 var(--font-sans);color:var(--navy);margin-bottom:6px}
+.ccw .combo__search:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgb(var(--c-accent-512-rgb) / .14)}
+.ccw .combo__list{max-height:230px;overflow-y:auto}
+.ccw .combo__opt{padding:13px 12px;border-radius:8px;font-size:15px;font-weight:500;color:var(--navy);cursor:pointer}
+.ccw .combo__opt.is-active{background:var(--blue-soft)}
+.ccw .combo__opt.is-chosen{font-weight:600}
+.ccw .combo__val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ccw .combo__empty{padding:12px;text-align:center;color:var(--hint);font-size:14px}
+
+/* FOOTER + BUTTONS */
+.ccw .foot{position:sticky;bottom:0;z-index:6;display:flex;align-items:center;gap:16px;width:100%;margin:8px 0 0;
+  padding:18px 0 28px;background:var(--c-white);border-top:1px solid var(--c-accent-047)}
+.ccw .foot::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:22px;pointer-events:none;background:linear-gradient(180deg,rgb(var(--c-white-rgb) / 0),var(--c-white))}
+.ccw .spacer{flex:1}
+.ccw .btn-navy{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--navy);color:var(--c-white);border:0;
+  border-radius:var(--r-pill);font:600 16px/1 var(--font-sans);padding:17px 32px;min-height:54px;cursor:pointer;
+  box-shadow:var(--shadow-btn);transition:background-color .16s ease,transform .3s var(--spring),box-shadow .16s ease}
+.ccw .btn-navy:active{transform:scale(.97);transition-duration:.1s}
+.ccw .btn-navy:disabled{background:var(--c-accent-073);color:var(--c-accent-500);box-shadow:none;cursor:not-allowed;transform:none}
+.ccw .btn-navy svg{width:16px;height:16px}
+.ccw .btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--c-white);color:var(--navy);border:1px solid var(--blue-line);
+  border-radius:var(--r-pill);font:600 16px/1 var(--font-sans);padding:16px 26px;min-height:54px;cursor:pointer;transition:background-color .16s ease}
+.ccw .btn-ghost svg{width:16px;height:16px}
+
+/* leave-confirmation dialog */
+.ccw .confirmx{position:fixed;inset:0;background:rgb(var(--c-primary-884-rgb) / .48);display:grid;place-items:center;z-index:60;padding:24px}
+.ccw .confirmx[hidden]{display:none}
+.ccw .confirmx__card{background:var(--c-white);border-radius:20px;padding:28px;max-width:380px;width:100%;text-align:center;box-shadow:0 24px 60px rgb(var(--c-primary-794-rgb) / .28);animation:ccw-rise .3s var(--ease-out) both}
+.ccw .confirmx__card h3{font-size:20px;font-weight:700;color:var(--navy);margin:0 0 8px}
+.ccw .confirmx__card p{font-size:14px;color:var(--muted);margin:0 0 22px;line-height:1.5}
+.ccw .confirmx__row{display:flex;gap:12px}
+.ccw .confirmx__row button{flex:1;justify-content:center;padding:15px}
+
+/* =========================================================
+   RESULTS - Clarity Table with cobalt header
+   ========================================================= */
+.ccw .sheet.is-wide{flex-direction:column;background:var(--sheet)}
+.ccw .sheet.is-wide .hero,.ccw .sheet.is-wide .wtop{display:none}
+.ccw .sheet.is-wide .work{flex:1;min-height:0}
+.ccw .sheet.is-wide .closeb{top:14px;right:16px;background:none;color:var(--c-white)}
+.ccw .sheet.is-wide .closeb:focus-visible{outline-color:var(--c-white)}
+.ccw .cgrid{display:grid;grid-template-columns:var(--cols)}
+.ccw .res-title{font-size:32px;font-weight:500;letter-spacing:-.01em;line-height:1.15;color:var(--c-white);text-align:center;margin:0 0 10px;transition:font-size .3s ease}
+.ccw .res-title b{font-weight:700}
+.ccw .res-note{text-align:center;font-size:14px;color:var(--c-accent-071);margin:0 0 26px;overflow:hidden;max-height:40px;transition:opacity .25s ease,max-height .3s ease,margin .3s ease}
+.ccw .chead{padding:30px 12px 18px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.ccw .chead--label{align-items:flex-start;justify-content:flex-end;padding-bottom:22px}
+.ccw .chead--label span{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--c-accent-094)}
+/* column highlight follows the pointer (or keyboard focus); rests on the Recommended column. The badge never moves. */
+.ccw .chead{transition:background-color .25s ease,box-shadow .25s ease;border-radius:var(--radius-card) var(--radius-card) 0 0}
+.ccw .chead.is-hl{background:rgb(var(--c-white-rgb) / .12);box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .18)}
+.ccw .cbadge{position:absolute;left:0;bottom:calc(100% + 17px);z-index:3;display:inline-flex;align-items:center;gap:6px;
+  background:var(--c-success-720);color:var(--c-white);font-size:12px;font-weight:700;letter-spacing:.02em;
+  padding:6px 14px 6px 10px;border-radius:var(--r-pill);box-shadow:0 6px 16px rgb(var(--c-success-720-rgb) / .38);white-space:nowrap;transition:all .3s ease}
+.ccw .cbadge::before{content:"";width:14px;height:14px;border-radius:50%;
+  background:rgb(var(--c-white-rgb) / .22) url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M4 7.2 6.1 9.2 10 5' stroke='%23fff' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.ccw .cface{position:relative;width:100%;max-width:220px;transition:max-width .3s ease}
+.ccw .cardimg{display:block;width:100%;aspect-ratio:1.585/1;object-fit:cover;border-radius:10px;box-shadow:0 18px 34px -14px rgb(var(--c-primary-929-rgb) / .6),0 6px 14px -6px rgb(var(--c-primary-929-rgb) / .35);transition:max-width .3s ease,border-radius .3s ease}
+.ccw .screen--res.is-collapsed .cardimg{border-radius:5px}
+/* faint light rim so the navy Voyager card never melts into the navy banner */
+.ccw .screen--res .cardimg,.ccw .screen--resm .cardimg{box-shadow:0 0 0 1px rgb(var(--c-white-rgb) / .16),0 18px 34px -14px rgb(var(--c-primary-929-rgb) / .6),0 6px 14px -6px rgb(var(--c-primary-929-rgb) / .35)}
+.ccw .cpick{width:100%;max-width:none;margin:16px 0 0;overflow:hidden;max-height:60px;transition:opacity .25s ease,max-height .3s ease,margin .3s ease}
+.ccw .cpick .select{font-size:13px;font-weight:600;text-align:left;min-height:46px;padding:13px 34px 13px 14px;background-position:right 14px center;border-color:transparent}
+.ccw .ctag{font-size:13px;color:var(--c-accent-033);margin:11px 6px 0;line-height:1.45;min-height:34px;font-weight:500;overflow:hidden;max-height:60px;transition:opacity .25s ease,max-height .3s ease,margin .3s ease}
+.ccw .cname{max-height:0;opacity:0;overflow:hidden;font-size:14px;font-weight:700;color:var(--c-white);line-height:1.25;margin:0;
+  transition:max-height .3s ease,opacity .25s ease,margin .3s ease}
+/* collapsed-on-scroll header: shrink card, keep name, hide dropdown + tagline */
+.ccw .screen--res.is-collapsed .cface{max-width:118px}
+.ccw .screen--res.is-collapsed .cpick,.ccw .screen--res.is-collapsed .ctag{opacity:0;max-height:0;margin-top:0;min-height:0;pointer-events:none}
+.ccw .screen--res.is-collapsed .cname{max-height:44px;opacity:1;margin-top:10px}
+.ccw .screen--res.is-collapsed .cbadge{font-size:10px;padding:3px 10px 3px 6px;bottom:calc(100% + 5px)}
+.ccw .screen--res.is-collapsed .res-title{font-size:22px}
+.ccw .screen--res.is-collapsed .res-note{opacity:0;max-height:0;margin:0}
+.ccw .screen--res.is-collapsed .chead{padding-top:28px;padding-bottom:14px}
+.ccw .body.body--res{justify-content:flex-start;align-items:stretch;overflow:hidden;padding:0}
+.ccw .screen--res{max-width:none;width:100%;margin:0;flex:1;min-height:0;display:flex;flex-direction:column;animation:none}
+.ccw .res-head{flex:none;padding:40px var(--pad) 0;background:var(--band);position:relative;z-index:2;transition:padding-top .3s ease}
+.ccw .screen--res.is-collapsed .res-head{padding-top:20px}
+.ccw .res-scroll{flex:1;min-height:0;overflow-y:auto;padding:0;background:var(--c-white)}
+.ccw .res-table{border-top:0}
+/* zebra stripes run edge to edge; the side padding lives inside each row so columns stay aligned */
+.ccw .crow{border-bottom:1px solid var(--hair);padding:0 var(--pad)}
+.ccw .res-scroll .fine{padding:16px calc(var(--pad) + 4px) 20px}
+.ccw .crow:nth-child(even){background:var(--zebra)}
+.ccw .crow__label{display:flex;align-items:center;justify-content:flex-start;text-align:left;gap:13px;padding:20px 20px 20px 4px;font-size:16px;font-weight:600;color:var(--navy);line-height:1.3}
+.ccw .crow__ic{flex:none;width:46px;height:46px;filter:drop-shadow(0 4px 6px rgb(var(--c-primary-847-rgb) / .14))}
+.ccw .crow__cell{padding:20px;font-size:16px;line-height:1.55;color:var(--c-primary-745);font-weight:500;border-left:1px solid var(--hair);display:flex;align-items:center;justify-content:center;text-align:center}
+.ccw .crow__cell{transition:background-color .25s ease}
+.ccw .crow__cell.is-hl{background:var(--rec-wash)}
+.ccw .na{color:var(--c-neutral-539);font-weight:500;font-size:20px}
+.ccw .fine{font-size:12px;line-height:1.5;color:var(--muted);padding:16px 4px 4px;margin:0;text-align:left}
+.ccw .res-foot{flex:none;background:var(--sheet);border-top:1px solid var(--hair);padding:16px var(--pad) 20px;box-shadow:0 -8px 20px rgb(var(--c-primary-843-rgb) / .05)}
+.ccw .foot__cell{padding:0 12px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.ccw .foot__cell--label{visibility:hidden}
+.ccw .res-foot .btn-navy,.ccw .mfoot .btn-navy{width:100%;justify-content:center}
+
+/* =========================================================
+   RESULTS - mobile + foldables: one card at a time (themed hero, card selector, benefit bento)
+   ========================================================= */
+.ccw .screen--resm{position:relative;max-width:640px;width:100%;margin:0 auto;flex:1;min-height:0;display:flex;flex-direction:column;
+  text-align:left;animation:none;--accent:var(--c-primary-794)}
+/* card name + figures stay primary navy on every card (Ram, 2026-10-21): only the hero background follows the card */
+.ccw .mscroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;background:var(--c-white);overscroll-behavior-y:contain}
+/* hero: Midnight base, a per-card tint crossfades on top (opacity only) */
+.ccw .mhead{position:relative;isolation:isolate;overflow:hidden;color:var(--c-white);text-align:center;padding:22px 0 40px;
+  background:linear-gradient(180deg,var(--c-primary-867) 0%,var(--c-primary-904) 55%,var(--c-primary-943) 100%)}
+.ccw .mbg{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.ccw .mbg i{position:absolute;inset:0;opacity:0;transition:opacity .7s ease}
+.ccw .mbg i[data-t="voyager"]{background:
+  radial-gradient(75% 55% at 50% 58%,rgb(var(--c-accent-347-rgb) / .6) 0%,rgb(var(--c-accent-347-rgb) / 0) 70%),
+  radial-gradient(60% 45% at 12% 0%,rgb(var(--c-accent-207-rgb) / .28) 0%,rgb(var(--c-accent-207-rgb) / 0) 70%),
+  linear-gradient(180deg,var(--c-primary-629) 0%,var(--c-primary-727) 50%,var(--c-primary-818) 100%)}
+.ccw .mbg i[data-t="skywards"]{background:
+  radial-gradient(75% 55% at 50% 58%,rgb(var(--c-accent-055-rgb) / .3) 0%,rgb(var(--c-accent-055-rgb) / 0) 70%),
+  radial-gradient(55% 40% at 90% 0%,rgb(var(--c-danger-529-rgb) / .18) 0%,rgb(var(--c-danger-529-rgb) / 0) 70%),
+  linear-gradient(180deg,var(--c-neutral-557) 0%,var(--c-neutral-665) 50%,var(--c-neutral-782) 100%)}
+.ccw .mbg i[data-t="marriott"]{background:
+  radial-gradient(75% 55% at 50% 58%,rgb(var(--c-glow-gold-384-rgb) / .55) 0%,rgb(var(--c-glow-gold-384-rgb) / 0) 70%),
+  radial-gradient(60% 45% at 12% 0%,rgb(var(--c-glow-gold-245-rgb) / .2) 0%,rgb(var(--c-glow-gold-245-rgb) / 0) 70%),
+  linear-gradient(180deg,var(--c-glow-gold-863) 0%,var(--c-glow-gold-924) 50%,var(--c-glow-gold-969) 100%)}
+.ccw .mbg::after{content:"";position:absolute;inset:0;opacity:.5;
+  background:repeating-radial-gradient(circle at 50% 120%,rgb(var(--c-white-rgb) / .07) 0 1px,transparent 1px 56px);
+  -webkit-mask-image:linear-gradient(180deg,transparent 10%,var(--c-black) 70%);mask-image:linear-gradient(180deg,transparent 10%,var(--c-black) 70%)}
+.ccw [data-theme="voyager"] .mbg i[data-t="voyager"],.ccw [data-theme="skywards"] .mbg i[data-t="skywards"],.ccw [data-theme="marriott"] .mbg i[data-t="marriott"]{opacity:1}
+.ccw .mhead .res-title{font-size:15px;font-weight:500;line-height:1.3;color:var(--c-accent-049);text-align:center;padding:0 64px;margin:0 0 14px}
+.ccw .mhead .res-title b{color:var(--c-white)}
+.ccw .mstat{padding:0 20px;min-height:58px}
+.ccw .mstat__big{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--c-white)}
+.ccw .mstat__sub{margin:4px 0 0;font-size:14px;line-height:1.4;color:rgb(var(--c-white-rgb) / .86)}
+.ccw .mstat.is-swap .mstat__big,.ccw .mstat.is-swap .mstat__sub{animation:ccw-statin .45s var(--ease-out) both}
+.ccw .mstat.is-swap .mstat__sub{animation-delay:.05s}
+@keyframes ccw-statin{from{opacity:0;transform:translate3d(0,8px,0)}to{opacity:1;transform:none}}
+/* carousel: scroll-snap, neighbours peek with their own chip */
+.ccw .mcarousel{position:relative;margin-top:10px}
+.ccw .mcards{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px 0 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ccw .mcards::-webkit-scrollbar{display:none}
+/* non-selected cards sit 25% smaller than the selected one */
+.ccw .mslide{position:relative;flex:0 0 33%;scroll-snap-align:center;opacity:.5;transform:scale(.75);transition:opacity .35s ease,transform .5s var(--ease-out)}
+.ccw .mslide:first-child{margin-left:33.5%}
+.ccw .mslide:last-child{margin-right:33.5%}
+.ccw .mslide.is-active{opacity:1;transform:none}
+.ccw .mslide .cardimg{width:100%}
+.ccw .mpager{display:flex;align-items:center;justify-content:center;gap:10px;margin:4px 0 0}
+/* arrow only: no circle; the 44px box stays as the invisible tap target */
+.ccw .mnav{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:none;color:var(--c-white);
+  display:grid;place-items:center;cursor:pointer;transition:background-color .2s ease,opacity .2s ease}
+.ccw .mnav svg{width:24px;height:24px}
+.ccw .mnav:focus-visible{outline-color:var(--c-white)}
+.ccw .mnav[hidden]{display:grid;visibility:hidden}
+.ccw .mname{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 10px;margin:6px 16px 0;padding:0;font-size:16px;font-weight:600;color:var(--c-white);min-height:26px}
+.ccw .mname .cbadge{position:static;font-size:11px;padding:5px 11px 5px 8px;box-shadow:0 4px 12px rgb(var(--c-black-rgb) / .3)}
+.ccw .mdots{display:flex;justify-content:center;gap:0;margin:0}
+.ccw .mdot{position:relative;width:28px;height:24px;border:0;padding:0;background:transparent;cursor:pointer}
+.ccw .mdot::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:3px;margin:-1.5px 0 0 -7px;border-radius:2px;background:rgb(var(--c-white-rgb) / .38);transition:background-color .25s ease,transform .3s var(--ease-out)}
+.ccw .mdot.on::after{background:var(--c-white);transform:scaleX(1.55)}
+.ccw .mdot:focus-visible{outline-color:var(--c-white);outline-offset:-2px}
+/* white sheet rises over the hero: card selector, then the benefit bento */
+.ccw .mdetail{position:relative;z-index:2;margin-top:-22px;background:var(--c-white);border-radius:var(--radius-sheet) var(--radius-sheet) 0 0;padding:16px 16px 22px}
+.ccw .mben__h{margin:22px 2px 12px}
+.ccw .mben__h h2{margin:0;font-size:20px;font-weight:700;letter-spacing:-.015em;line-height:1.2;color:var(--accent);transition:color .4s ease}
+.ccw .mben__h p{margin:4px 0 0;font-size:14px;line-height:1.45;color:var(--ink-2)}
+.ccw .mbento{container-type:inline-size;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2.4vw,14px);margin:0;padding:0;list-style:none}
+.ccw .mbento.is-swap{animation:ccw-benin .45s var(--ease-out) both}
+@keyframes ccw-benin{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+.ccw .btile{position:relative;container-type:inline-size;display:flex;flex-direction:column;min-width:0;padding:clamp(12px,3.6cqi,20px) clamp(12px,3.6cqi,20px) clamp(14px,4cqi,22px);background:var(--c-white);border:1px solid var(--c-accent-073);border-radius:var(--radius-tile);box-shadow:var(--shadow-chip)}
+.ccw .btile--wide{grid-column:span 2}
+.ccw .btile__top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ccw .btile__lab{margin:0;padding-top:3px;font-size:clamp(10.5px,7.8cqi,13px);font-weight:600;letter-spacing:.06em;line-height:1.35;text-transform:uppercase;color:var(--muted)}
+.ccw .btile__ic{flex:none;width:clamp(40px,31cqi,58px);height:clamp(40px,31cqi,58px);margin:-6px -6px 0 0;filter:drop-shadow(0 5px 7px rgb(var(--c-primary-847-rgb) / .14))}
+/* the figure scales with the card width so it never collides (container query units) */
+.ccw .btile__num{margin:4px 0 6px;min-width:0;font-size:clamp(24px,18cqi,42px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--accent);font-variant-numeric:lining-nums;transition:color .4s ease;white-space:nowrap}
+.ccw .btile--wide .btile__num{font-size:clamp(30px,13cqi,54px)}
+.ccw .btile--wide .btile__lab{font-size:clamp(11px,3.46cqi,13.5px)}
+.ccw .btile--wide .btile__ic{width:clamp(46px,15cqi,66px);height:clamp(46px,15cqi,66px)}
+.ccw .btile--wide .btile__val{font-size:clamp(13px,4.07cqi,16.5px)}
+.ccw .btile__num small{font-size:.4em;font-weight:700;letter-spacing:.02em;margin:0 3px 0 1px}
+.ccw .btile__val{margin:8px 0 0;font-size:clamp(12.5px,9.1cqi,15.5px);line-height:1.45;font-weight:500;color:var(--c-primary-745)}
+.ccw .btile__num + .btile__val{margin-top:0}
+.ccw .btile__val b{font-weight:600;color:var(--navy)}
+.ccw .btile--wide .btile__val{max-width:560px}
+.ccw .mdetail .fine{padding:14px 2px 0}
+/* compact sticky header once the hero scrolls away */
+.ccw .mmini{position:absolute;left:0;right:0;top:0;z-index:5;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:12px;
+  box-sizing:border-box;height:68px;padding:0 64px 0 16px;color:var(--c-white);transform:translate3d(0,-105%,0);transition:transform .35s var(--ease-out);
+  box-shadow:0 10px 24px -14px rgb(var(--c-black-rgb) / .6);background:var(--c-primary-904)}
+.ccw .mmini.is-on{transform:none}
+.ccw .mmini__img{flex:none;width:50px;aspect-ratio:1.585/1;object-fit:cover;border-radius:4px;box-shadow:0 0 0 1px rgb(var(--c-white-rgb) / .18)}
+.ccw .mmini__n{margin:0;font-size:14px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccw .mmini__s{margin:2px 0 0;font-size:12.5px;font-weight:500;line-height:1.3;color:rgb(var(--c-white-rgb) / .88);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccw .mmini > div{min-width:0}
+.ccw .mfoot{flex:none;background:var(--sheet);border-top:1px solid var(--hair);padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:row;align-items:center;gap:10px;box-shadow:0 -8px 20px rgb(var(--c-primary-843-rgb) / .05);position:relative;z-index:6}
+.ccw .mfoot .btn-navy{flex:1;min-height:50px}
+
+/* THANK YOU */
+.ccw .confirm{background:var(--c-white);border:1px solid var(--c-accent-069);border-radius:var(--r-md);padding:24px;text-align:left;margin-top:28px;
+  box-shadow:0 1px 2px rgb(var(--c-primary-794-rgb) / .04),0 12px 30px -18px rgb(var(--c-primary-794-rgb) / .25)}
+
+/* hover only where a pointer can hover */
+@media (hover:hover){
+  .ccw .tile:not(.dim):not(.is-on):hover{transform:translate3d(0,-6px,0);box-shadow:0 2px 4px rgb(var(--c-primary-861-rgb) / .06),0 22px 40px -16px rgb(var(--c-primary-794-rgb) / .35)}
+  .ccw .tile:not(.dim):hover::before{opacity:1}
+  .ccw .tile:not(.dim):hover::after{transform:scale(1.12)}
+  .ccw .tile:not(.dim):hover .tile__ic{transform:translate3d(-4px,-5px,0) rotate(-4deg) scale(1.06)}
+  .ccw .tile:not(.dim):not(.is-on):hover .tile__rank{border-color:var(--c-accent-424);background:var(--c-white)}
+  .ccw .tile.is-on:hover{box-shadow:0 20px 36px -14px rgb(var(--c-primary-847-rgb) / .7),inset 0 1px 0 rgb(var(--c-white-rgb) / .12)}
+  .ccw .mnav:hover{background:none;opacity:.75}
+  .ccw .btn-navy:not(:disabled):hover{background:var(--navy-deep)}
+  .ccw .btn-ghost:hover{background:var(--c-neutral-021)}
+  .ccw .closeb:hover,.ccw .topback:hover{background:none;opacity:.65}
+  .ccw .sheet.is-wide .closeb:hover{background:none}
+  .ccw .combo__opt:hover{background:var(--blue-soft)}
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+/* desktop: 4-column bento beside the card stage; rows flex with the viewport so the grid fits above the footer */
+@media (min-width:1101px){
+  .ccw .bento{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;--row:clamp(128px,calc((100vh - 420px) / 3),176px)}
+  .ccw .bento--many{--row:clamp(104px,calc((100vh - 470px) / 4),140px)}
+  .ccw .bento--many .tile{font-size:14px}
+  .ccw .bento--many{--ic:58px}
+}
+/* per-screen deck scale */
+.ccw .sheet[data-screen="about"]{--ds:.84}
+.ccw .sheet[data-screen="contact"]{--ds:.84}
+.ccw .sheet[data-screen="thanks"]{--ds:1.04}
+@media (max-width:1100px){
+  .ccw{--cw:300px;--u:34px;--hero-w:42%}
+  .ccw .match{left:36px;right:36px;bottom:36px}
+  .ccw .wtop{padding-left:40px;padding-right:40px}
+  .ccw .body{padding:0 40px}
+  .ccw .stitle{font-size:36px}
+}
+@media (max-width:900px){
+  .ccw{--gutter:22px}
+  .ccw .res-title{font-size:27px}
+}
+/* MOBILE (primary: 86% of users) - stage becomes a top hero, page scrolls, CTA pinned.
+   Applies below 700px, or up to 820px on tall screens; wide-but-short (open foldable) keeps two zones */
+@media (max-width:699.98px),(max-width:820px) and (min-height:641px){
+  .ccw{--cw:236px;--u:21px}
+  .ccw .frame{padding:0}
+  .ccw .sheet{flex-direction:column;height:auto;min-height:100vh;min-height:100dvh;border-radius:0;overflow:visible;box-shadow:none}
+  .ccw .hero{flex:none;height:298px}
+  .ccw .bloom{width:520px;height:520px;margin:-260px 0 0 -260px;top:52%}
+  .ccw .hero__floor{height:40%}
+  .ccw .scene{top:70px;bottom:62px;perspective:1000px;perspective-origin:50% 45%}
+  .ccw .rig{animation-name:ccw-sway-m}
+  .ccw .contact{margin-top:calc(var(--cw) * .4)}
+  .ccw .match{left:16px;right:16px;bottom:34px;display:flex;align-items:center;gap:10px}
+  .ccw .match__k{margin:0;font-size:11px;letter-spacing:.1em;flex:none}
+  .ccw .match__k::before{width:6px;height:6px;box-shadow:0 0 0 3px rgb(var(--c-accent-251-rgb) / .22)}
+  .ccw .match__name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .ccw .match__sub,.ccw .picks,.ccw .nm-long{display:none}
+  /* steps: the step topic alone, as a title centred at the top of the stage between the back and close buttons */
+  .ccw .match.is-guide{top:12px;bottom:auto;left:60px;right:60px;min-height:44px;justify-content:center;align-items:center}
+  .ccw .match.is-guide .match__k{display:none}
+  .ccw .dname{font-size:10.5px;font-weight:400;letter-spacing:.02em;color:rgb(var(--c-white-rgb) / .78)}
+  .ccw .match.is-guide .match__name{font-size:clamp(21px,6.4vw,25px);font-weight:500;line-height:1.12;white-space:normal;text-wrap:balance;letter-spacing:-.005em;text-align:center}
+  .ccw .nm-short{display:inline}
+  /* compact band for the long lists, calm band for forms, tall stage for thanks */
+  .ccw .sheet[data-screen="benefit"] .hero,.ccw .sheet[data-screen="three"] .hero{height:232px}
+  .ccw .sheet[data-screen="benefit"],.ccw .sheet[data-screen="three"]{--ds:.66}
+  .ccw .sheet[data-screen="about"] .hero,.ccw .sheet[data-screen="contact"] .hero{height:236px}
+  .ccw .sheet[data-screen="about"],.ccw .sheet[data-screen="contact"]{--ds:.7}
+  .ccw .sheet[data-screen="benefit"] .scene,.ccw .sheet[data-screen="three"] .scene,.ccw .sheet[data-screen="about"] .scene,.ccw .sheet[data-screen="contact"] .scene{top:64px;bottom:56px}
+  .ccw .sheet[data-screen="thanks"] .hero{height:330px}
+  .ccw .sheet[data-screen="thanks"]{--ds:1.04}
+  .ccw .sheet[data-screen="thanks"] .scene{top:66px;bottom:66px}
+  /* chrome over the hero */
+  .ccw .work{position:static;height:auto}
+  .ccw .wtop{position:absolute;top:16px;left:16px;z-index:5;padding:0}
+  .ccw .sheet.has-back .wtop{left:66px}
+  .ccw .pmeta{flex-direction:column-reverse;align-items:flex-start;gap:7px;max-width:none;margin:0}
+  .ccw .progress{width:140px}
+  .ccw .progress i{height:4px;background:rgb(var(--c-white-rgb) / .3)}
+  .ccw .progress i.on{background:var(--c-white)}
+  .ccw .stepind{font-size:12px;color:var(--c-accent-041)}
+  .ccw .closeb{top:12px;right:12px;background:none;color:rgb(var(--c-white-rgb) / .62)}
+  /* softer icons on the dark stage: dimmer and a finer stroke */
+  .ccw .closeb svg *,.ccw .topback svg *{stroke-width:1.5}
+  .ccw .topback{color:rgb(var(--c-white-rgb) / .62)}
+  .ccw .closeb:focus-visible{outline-color:var(--c-white)}
+  .ccw .topback[data-on]{display:grid}
+  /* white sheet rises over the hero */
+  .ccw .body{overflow:visible;display:block;padding:0 16px;margin-top:-20px;position:relative;z-index:4;background:var(--c-white);border-radius:20px 20px 0 0}
+  .ccw .screen{max-width:none;display:block}
+  .ccw .screen.screen--res,.ccw .screen.screen--resm{display:flex}
+  .ccw .screen__main{margin:0;padding:22px 0 calc(150px + env(safe-area-inset-bottom))}
+  .ccw .eyebrow{font-size:11px;margin-bottom:8px}
+  .ccw .stitle{font-size:22px;letter-spacing:-.01em;line-height:1.15}
+  .ccw .ssub{position:relative;font-size:14px;line-height:1.45;margin-top:6px}
+  .ccw .bento{gap:8px;margin-top:16px;--row:108px}
+  .ccw .bento--many{--row:100px;--ic:60px}
+  .ccw .tile{padding:12px;font-size:14px;border-radius:var(--radius-card)}
+  .ccw .tile__rank{top:9px;right:9px;width:22px;height:22px}
+  .ccw .form{margin-top:20px}
+  .ccw .field + .field{margin-top:18px}
+  /* Continue pinned to the bottom, full width, 16px side margins, safe area */
+  .ccw .foot{position:fixed;left:0;right:0;bottom:0;margin:0;padding:10px 16px calc(16px + env(safe-area-inset-bottom));
+    flex-direction:column;align-items:stretch;gap:10px;z-index:20;box-shadow:0 -10px 24px rgb(var(--c-primary-794-rgb) / .07)}
+  .ccw .foot .spacer,.ccw .foot .btn-ghost{display:none}
+  .ccw .foot .btn-navy{width:100%}
+  .ccw .count{justify-content:center;font-size:13px}
+  .ccw .sheet[data-screen="thanks"] .screen__main{padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+  /* results keep their own full-height layout */
+  .ccw .sheet.is-wide{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+  .ccw .sheet.is-wide .work{flex:1;min-height:0;display:flex;flex-direction:column}
+  .ccw .sheet.is-wide .body{margin:0;border-radius:0;display:flex;flex:1;min-height:0}
+  .ccw .sheet.is-wide .closeb{top:12px;right:12px}
+}
+@media (max-width:480px){
+  .ccw .stitle{font-size:21px}
+}
+/* FOLDABLES + SHORT SCREENS: height is the constraint */
+/* folded (e.g. 434x576): stacked, hero compressed hard so options show above the pinned CTA */
+@media (max-width:699.98px) and (max-height:640px){
+  .ccw .hero{height:200px}
+  .ccw .sheet[data-screen="spend"]{--ds:.62}
+  .ccw .scene{top:50px;bottom:44px}
+  .ccw .sheet[data-screen="benefit"] .hero,.ccw .sheet[data-screen="three"] .hero,.ccw .sheet[data-screen="about"] .hero,.ccw .sheet[data-screen="contact"] .hero{height:176px}
+  .ccw .sheet[data-screen="benefit"],.ccw .sheet[data-screen="three"]{--ds:.5}
+  .ccw .sheet[data-screen="about"],.ccw .sheet[data-screen="contact"]{--ds:.54}
+  .ccw .sheet[data-screen="benefit"] .scene,.ccw .sheet[data-screen="three"] .scene,.ccw .sheet[data-screen="about"] .scene,.ccw .sheet[data-screen="contact"] .scene{top:48px;bottom:40px}
+  .ccw .sheet[data-screen="thanks"] .hero{height:240px}
+  .ccw .sheet[data-screen="thanks"]{--ds:.82}
+  .ccw .sheet[data-screen="thanks"] .scene{top:50px;bottom:50px}
+  .ccw .match{bottom:28px}
+  .ccw .match.is-guide{top:8px;bottom:auto}
+  .ccw .match.is-guide .match__name{font-size:21px;white-space:nowrap}
+  .ccw .dname{font-size:10px}
+  .ccw .wtop{top:12px}
+  .ccw .closeb,.ccw .topback{top:8px}
+  .ccw .screen__main{padding:14px 0 calc(100px + env(safe-area-inset-bottom))}
+  .ccw .eyebrow{font-size:10.5px;margin-bottom:4px}
+  .ccw .stitle{font-size:19px}
+  .ccw .ssub{font-size:13px;margin-top:4px}
+  .ccw .bento{margin-top:12px;--row:96px;--ic:56px}
+  .ccw .bento--many{--row:92px;--ic:54px}
+  .ccw .tile{padding:11px 12px;font-size:13.5px}
+  .ccw .foot{gap:6px;padding:8px 16px calc(10px + env(safe-area-inset-bottom))}
+  .ccw .foot .btn-navy{min-height:48px;padding:13px 24px}
+  .ccw .count{font-size:12px}
+  .ccw .form{margin-top:14px}
+  .ccw .field + .field{margin-top:12px}
+  .ccw .input,.ccw .select,.ccw .pinput,.ccw .combo__ctrl{min-height:50px}
+  .ccw .input,.ccw .select,.ccw .combo__ctrl,.ccw .pinput input{padding-top:13px;padding-bottom:13px}
+  .ccw .combo__list{max-height:180px}
+  .ccw .confirm{margin-top:16px;padding:18px}
+}
+/* open foldable / landscape-short (e.g. 768x576): two zones, sheet scrolls, CTA pinned inside it */
+@media (min-width:700px) and (max-height:640px){
+  .ccw{--cw:230px;--u:25px}
+  .ccw .frame{padding:6px}
+  .ccw .sheet{height:calc(100vh - 12px);min-height:0;border-radius:var(--radius-card)}
+  .ccw .scene{bottom:100px}
+  .ccw .match{left:24px;right:24px;bottom:22px}
+  .ccw .match__k{font-size:11px;margin-bottom:6px}
+  .ccw .match__name{font-size:16px}
+  .ccw .match__sub{display:none}
+  .ccw .picks{margin-top:8px;gap:6px}
+  .ccw .picks li{font-size:12px;padding:4px 10px 4px 4px}
+  .ccw .wtop{padding:18px 64px 0 28px}
+  .ccw .pmeta{margin:0;gap:10px}
+  .ccw .progress{width:110px}
+  .ccw .stepind{font-size:12px}
+  .ccw .body{padding:0 28px}
+  .ccw .closeb{top:10px;right:10px}
+  .ccw .screen__main{padding:12px 0 12px}
+  .ccw .eyebrow{font-size:11px;margin-bottom:6px}
+  .ccw .stitle{font-size:26px}
+  .ccw .ssub{font-size:14px;margin-top:6px}
+  .ccw .bento{margin-top:14px;gap:8px;--row:92px;--ic:54px}
+  .ccw .bento--many{--row:88px;--ic:52px}
+  .ccw .tile{padding:10px 12px;font-size:13.5px;border-radius:var(--radius-card)}
+  .ccw .foot{gap:10px;padding:10px 0 14px}
+  .ccw .btn-navy,.ccw .btn-ghost{min-height:46px;font-size:15px}
+  .ccw .foot .btn-navy{padding:12px 22px}
+  .ccw .foot .btn-ghost{padding:12px 16px}
+  .ccw .count{font-size:12px}
+  .ccw .count .pips{display:none}
+  .ccw .form{margin-top:14px}
+  .ccw .field + .field{margin-top:12px}
+  .ccw .input,.ccw .select,.ccw .pinput,.ccw .combo__ctrl{min-height:48px}
+  .ccw .input,.ccw .select,.ccw .combo__ctrl,.ccw .pinput input{padding-top:12px;padding-bottom:12px}
+  .ccw .combo__list{max-height:170px}
+  .ccw .combo__pop{scroll-margin-bottom:84px}
+  .ccw .confirm{margin-top:14px;padding:16px}
+  /* open foldable: the sheet HUGS its content and the page scrolls (a locked 100vh hid Continue and the stage text
+     behind the browser bars on real devices). The card stage stays pinned beside the content. */
+  .ccw .sheet:not(.is-wide){height:auto;min-height:calc(100vh - 12px);min-height:calc(100dvh - 12px);overflow:visible;align-items:flex-start}
+  .ccw .sheet:not(.is-wide) .hero{position:sticky;top:6px;height:calc(100vh - 12px);height:calc(100dvh - 12px);border-radius:var(--radius-card) 0 0 var(--radius-card)}
+  .ccw .sheet:not(.is-wide) .work{height:auto;align-self:stretch}
+  .ccw .sheet:not(.is-wide) .body{overflow:visible;flex:1 0 auto}
+  .ccw .sheet:not(.is-wide) .foot{background:var(--surface);border-radius:0 0 var(--radius-card) 0}
+}
+/* results on short screens: compress the hero hard so the card selector and first bento row are reachable */
+@media (max-height:640px){
+  .ccw .screen--resm{max-width:none}
+  .ccw .mhead{padding:14px 0 30px}
+  .ccw .mhead .res-title{font-size:13px;margin:0 0 6px}
+  .ccw .mstat{min-height:0}
+  .ccw .mstat__big{font-size:19px}
+  .ccw .mstat__sub{font-size:12.5px;margin-top:2px}
+  .ccw .mcarousel{margin-top:2px}
+  .ccw .mcards{padding:10px 0 6px}
+  .ccw .mslide{flex-basis:min(22%,96px)}
+  .ccw .mslide:first-child{margin-left:calc((100% - min(22%,96px)) / 2)}
+  .ccw .mslide:last-child{margin-right:calc((100% - min(22%,96px)) / 2)}
+  .ccw .mname{font-size:14px;margin-top:2px;min-height:22px}
+  .ccw .mname .cbadge{font-size:10px;padding:3px 9px 3px 6px}
+  .ccw .mpager{margin:2px 0 0;gap:6px}
+  .ccw .mnav{width:40px;height:40px}
+  .ccw .mnav svg{width:22px;height:22px}
+  .ccw .mdot{height:24px}
+  .ccw .mdetail{margin-top:-18px;padding:12px 14px 18px;border-radius:var(--radius-tile) var(--radius-tile) 0 0}
+  .ccw .mben__h{margin:14px 2px 8px}
+  .ccw .mben__h h2{font-size:18px}
+  .ccw .mben__h p{font-size:13px}
+  .ccw .mfoot{padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+  .ccw .mfoot .btn-navy{min-height:46px}
+}
+/* folded: the card name is already in the hero, so the bento heading goes screen-reader only to pull the first row above the fold */
+@media (max-width:699.98px) and (max-height:640px){
+  .ccw .mben__h{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .ccw .mbento{margin-top:10px}
+}
+/* open foldable / wide-short: hero stays put on the left, details scroll on the right */
+@media (min-width:700px) and (max-height:640px){
+  .ccw .mscroll{display:flex;overflow:hidden}
+  .ccw .mhead{flex:0 0 46%;display:flex;flex-direction:column;justify-content:center;padding:26px 0 18px}
+  .ccw .mhead .res-title{font-size:15px;margin-bottom:10px;padding:0 20px}
+  .ccw .mstat__big{font-size:22px}
+  .ccw .mslide{flex-basis:34%}
+  .ccw .mslide:first-child{margin-left:33%}
+  .ccw .mslide:last-child{margin-right:33%}
+  .ccw .mdetail{flex:1;min-width:0;overflow-y:auto;margin:0;border-radius:0;padding:62px 20px 20px}
+  .ccw .mmini{display:none}
+  .ccw .mfoot{padding-left:20px;padding-right:20px}
+}
+/* FLOW (default on Steps 1-4): the whole credit-card range on a 3D coverflow. It steps one card at a time,
+   the centre card comes forward with a light sweep, neighbours fan back in depth; the name below follows the centre card. */
+.ccw .flow{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;opacity:0;transition:opacity .6s ease}
+.ccw .fcard{position:absolute;width:calc(var(--cw) * .74);aspect-ratio:1.585/1;left:calc(var(--cw) * -.37);top:calc(var(--cw) * -.2334);
+  border-radius:3.2% / 5.05%;overflow:hidden;opacity:0;backface-visibility:hidden;
+  box-shadow:0 30px 50px -24px rgb(var(--c-primary-929-rgb) / .8),0 10px 20px -10px rgb(var(--c-primary-929-rgb) / .5),0 0 0 1px rgb(var(--c-white-rgb) / .06);
+  transition:transform .95s cubic-bezier(.65,0,.25,1),opacity .6s ease,filter .6s ease}
+.ccw .fcard img{width:100%;height:100%;object-fit:cover}
+.ccw .fcard.no-trans{transition:none!important}
+.ccw .fcard .glint{display:block}
+.ccw .fcard.is-glint .glint{animation:ccw-glint 1.1s var(--ease-out) .45s both}
+.ccw .stack{transition:opacity .6s ease}
+.ccw .sheet[data-screen="spend"] .flow,.ccw .sheet[data-screen="benefit"] .flow,.ccw .sheet[data-screen="three"] .flow,.ccw .sheet[data-screen="about"] .flow{opacity:1}
+.ccw .sheet[data-screen="spend"] .stack,.ccw .sheet[data-screen="benefit"] .stack,.ccw .sheet[data-screen="three"] .stack,.ccw .sheet[data-screen="about"] .stack{opacity:0}
+.ccw .ccard.no-trans{transition:none!important}
+/* card name under the stack, changes with the front card */
+.ccw .dname{position:absolute;left:0;right:0;z-index:2;margin:0;text-align:center;pointer-events:none;
+  top:calc(50% + var(--cw) * .285 * var(--ds,1) + 8px);
+  font-size:13px;font-weight:400;letter-spacing:.01em;color:rgb(var(--c-white-rgb) / .8);transition:opacity .3s ease}
+.ccw .dname span{display:inline-block}
+.ccw .dname.is-in span{animation:ccw-dnamein .5s var(--ease-out) both}
+@keyframes ccw-dnamein{from{opacity:0;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
+.ccw .sheet:not([data-screen="spend"]):not([data-screen="benefit"]):not([data-screen="three"]):not([data-screen="about"]) .dname{opacity:0}
+
+@media (prefers-reduced-motion:reduce){
+  .ccw,.ccw *,.ccw *::before,.ccw *::after{transition:none!important;animation:none!important}
+  .ccw .bloom{transform:none!important}
+}
+
+/* ============ CHOICE TILES (icon grid, chosen 2026-10-07): calm tiles. One type size, no featured tiles, no motion ============ */
+.ccw .bento .tile,.ccw .bento .tile:hover,.ccw .bento .tile:active,.ccw .bento .tile.just-on{animation:none!important;transform:none!important}
+.ccw .bento .tile{transition:background-color .2s ease,border-color .2s ease,color .2s ease!important;box-shadow:none!important;height:auto!important}
+.ccw .bento .tile::before,.ccw .bento .tile::after,.ccw .bento .tile__lbl::before{display:none!important}
+.ccw .bento .tile .tile__ic,.ccw .bento .tile:hover .tile__ic{animation:none!important;transform:none!important;position:relative!important;right:auto!important;bottom:auto!important;filter:none!important}
+.ccw .bento .tile:not(.is-on){background:var(--c-white)!important;border:1px solid var(--c-accent-083)!important}
+.ccw .bento .tile:not(.is-on):hover{border-color:var(--c-accent-182)!important}
+/* selected = light state: soft blue wash, cobalt border, cobalt check; the same glossy icon stays (no dark/light swap) */
+.ccw .bento .tile.is-on{background:var(--c-accent-033)!important;border:1.5px solid var(--c-accent-424)!important;color:var(--navy)!important}
+.ccw .bento .tile.is-on .tile__ic .ic-dk{opacity:1!important}
+.ccw .bento .tile.is-on .tile__ic .ic-lt{opacity:0!important}
+.ccw .bento .tile.is-on .tile__rank{box-shadow:none!important}
+.ccw .bento .tile__lbl{max-width:none!important;letter-spacing:-.005em!important}
+.ccw .screen .bento{grid-auto-rows:auto!important}
+.ccw .bento .tile:focus-visible{outline:3px solid var(--c-accent-424);outline-offset:2px}
+
+/* A: equal icon grid, icon on top, label underneath, centred */
+.ccw .screen .bento{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important}
+.ccw .bento .tile{align-items:center!important;justify-content:flex-start!important;text-align:center!important;gap:10px;min-height:124px;padding:18px 8px 14px!important;border-radius:var(--radius-tile)!important;font:500 13.5px/1.25 var(--font-sans)!important}
+.ccw .bento .tile .tile__ic{order:-1;width:64px!important;height:64px!important}
+.ccw .bento .tile__lbl{order:0}
+.ccw .bento .tile__rank{top:8px!important;right:8px!important;width:20px!important;height:20px!important}
+@media (min-width:1101px){
+  .ccw .screen .bento{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+  /* Step 1 has 10 options: 5 across gives two complete rows instead of a stray row of two */
+  .ccw .screen .bento:not(.bento--many){grid-template-columns:repeat(5,minmax(0,1fr))!important}
+  .ccw .bento:not(.bento--many) .tile{min-height:164px}
+  .ccw .bento .tile{min-height:150px;font-size:15px!important;padding:22px 10px 16px!important}
+  .ccw .bento .tile .tile__ic{width:74px!important;height:74px!important}
+  .ccw .screen .bento--many{gap:10px!important}
+  .ccw .bento--many .tile{min-height:112px;padding:10px 6px 10px!important;gap:4px;font-size:13.5px!important}
+  .ccw .bento--many .tile .tile__ic{width:66px!important;height:66px!important}
+  /* the art sits inside transparent padding: scale the image up so the object itself reads larger without growing the tile */
+  .ccw .bento--many .tile .tile__ic img{transform:scale(1.22);transform-origin:50% 60%}
+}
+@media (min-width:700px) and (max-height:640px){
+  .ccw .bento .tile{min-height:104px;padding:12px 6px 10px!important;gap:6px}
+  .ccw .bento .tile .tile__ic{width:46px!important;height:46px!important}
+}
+
+/* =====================================================================
+   V5 LIQUID GLASS. One layer on top of V4: a luminous brand-blue wall, light refractive
+   glass panels with specular rims, glass tiles, liquid capsule buttons. The card stage stays
+   midnight navy so the cards keep their contrast. Only large panels and bars use backdrop-filter
+   (tiles are translucent + rim only) to stay smooth on phones.
+   ===================================================================== */
+.ccw{
+  --g-fill:rgb(var(--c-white-rgb) / .5); --g-fill-lo:rgb(var(--c-white-rgb) / .34);
+  --g-blur:blur(30px) saturate(190%); --g-blur-sm:blur(18px) saturate(170%);
+  --g-shadow:0 18px 40px -22px rgb(var(--c-primary-794-rgb) / .38),0 2px 6px -2px rgb(var(--c-primary-794-rgb) / .08);
+  --g-spec:inset 0 1px 0 rgb(var(--c-white-rgb) / .95),inset 0 -1px 0 rgb(var(--c-white-rgb) / .28);
+  --g-rim:linear-gradient(140deg,rgb(var(--c-white-rgb) / 1) 0%,rgb(var(--c-white-rgb) / .35) 28%,rgb(var(--c-white-rgb) / 0) 52%,rgb(var(--c-white-rgb) / .28) 76%,rgb(var(--c-white-rgb) / .9) 100%);
+}
+
+
+
+
+/* shared refractive rim (1px gradient ring, bright top-left and bottom-right like light through a lens) */
+.ccw .work::after,.ccw .btile::after,.ccw .mdetail::after,.ccw .res-foot::after,.ccw .mfoot::after,.ccw .foot::after,.ccw .confirm::after,.ccw .bento .tile::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:var(--g-rim);-webkit-mask:linear-gradient(var(--c-black) 0 0) content-box,linear-gradient(var(--c-black) 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+
+/* ---- DESKTOP SHELL: transparent sheet, midnight stage panel + floating glass work panel ---- */
+/* one sheet: the flat midnight stage and the glass panel join edge to edge (no gap, no separate card) */
+.ccw .sheet{background:transparent!important;gap:0;border-radius:var(--radius-sheet);overflow:clip;box-shadow:0 30px 60px -34px rgb(var(--c-primary-861-rgb) / .5)!important}
+.ccw .hero{border-radius:0;box-shadow:none}
+.ccw .work{position:relative;isolation:isolate;border-radius:0;background:var(--g-fill);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+  box-shadow:var(--g-spec),var(--g-shadow);overflow:clip}
+/* note: clip (not hidden) so sticky children still stick to the page scroll */
+.ccw .foot{background:linear-gradient(180deg,rgb(var(--c-neutral-022-rgb) / 0) 0%,rgb(var(--c-neutral-022-rgb) / .92) 34%)!important;border-top:0!important}
+.ccw .foot::before{display:none!important}
+.ccw .foot::after{display:none}
+.ccw .sheet.is-wide{gap:0}
+.ccw .sheet.is-wide .work{background:var(--g-fill-lo)}
+
+/* ---- TILES: translucent glass chips with a lens rim ---- */
+.ccw .bento .tile{box-shadow:0 10px 24px -16px rgb(var(--c-primary-794-rgb) / .35),inset 0 1px 0 rgb(var(--c-white-rgb) / .9)!important}
+.ccw .bento .tile:not(.is-on){background:rgb(var(--c-white-rgb) / .52)!important;border:1px solid rgb(var(--c-white-rgb) / .55)!important}
+.ccw .bento .tile:not(.is-on):hover{background:rgb(var(--c-white-rgb) / .74)!important;border-color:rgb(var(--c-white-rgb) / .9)!important}
+.ccw .bento .tile::after{display:block!important;z-index:3;width:auto;height:auto;aspect-ratio:auto;transform:none!important;right:0;bottom:0}
+.ccw .bento .tile.is-on{background:linear-gradient(160deg,rgb(var(--c-accent-424-rgb) / .2) 0%,rgb(var(--c-accent-424-rgb) / .07) 100%)!important;border:1.5px solid rgb(var(--c-accent-424-rgb) / .7)!important;
+  box-shadow:0 12px 26px -14px rgb(var(--c-accent-424-rgb) / .45),inset 0 1px 0 rgb(var(--c-white-rgb) / .85),inset 0 0 0 4px rgb(var(--c-white-rgb) / .18)!important}
+.ccw .bento .tile__rank{background:rgb(var(--c-white-rgb) / .55);border-color:rgb(var(--c-primary-794-rgb) / .22)}
+.ccw .bento .tile.is-on .tile__rank{background:var(--c-accent-424);border-color:var(--c-accent-424)}
+
+/* ---- LIQUID CAPSULE BUTTONS ---- */
+.ccw .btn-navy{position:relative;overflow:hidden;isolation:isolate;
+  background:radial-gradient(120% 95% at 50% -35%,rgb(var(--c-white-rgb) / .34) 0%,rgb(var(--c-white-rgb) / 0) 62%),linear-gradient(180deg,var(--c-accent-535) 0%,var(--c-primary-690) 55%,var(--c-primary-794) 100%)!important;
+  box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .5),inset 0 -3px 8px rgb(var(--c-primary-922-rgb) / .28),0 12px 26px -10px rgb(var(--c-primary-690-rgb) / .6)!important}
+
+.ccw .btn-navy:hover{filter:brightness(1.08)}
+.ccw .btn-navy:disabled{background:rgb(var(--c-white-rgb) / .8)!important;color:var(--c-accent-500);box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .95),inset 0 0 0 1px rgb(var(--c-primary-794-rgb) / .08)!important}
+.ccw .btn-ghost{background:rgb(var(--c-white-rgb) / .55)!important;border:1px solid rgb(var(--c-white-rgb) / .9)!important;
+  -webkit-backdrop-filter:var(--g-blur-sm);backdrop-filter:var(--g-blur-sm);box-shadow:inset 0 1px 0 var(--c-white),0 8px 18px -12px rgb(var(--c-primary-794-rgb) / .35)}
+
+/* ---- FIELDS ---- */
+/* glass fields: change only the colour so the select keeps its chevron */
+.ccw .input,.ccw .select,.ccw .combo__ctrl,.ccw .pinput{background-color:rgb(var(--c-white-rgb) / .66)!important;border-color:rgb(var(--c-white-rgb) / .9)!important;
+  box-shadow:inset 0 1px 0 var(--c-white),0 6px 16px -12px rgb(var(--c-primary-794-rgb) / .35)!important}
+.ccw .pinput__pre{background:rgb(var(--c-accent-050-rgb) / .7)!important}
+.ccw .combo__pop{background:rgb(var(--c-white-rgb) / .86)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-color:rgb(var(--c-white-rgb) / .9)!important}
+.ccw .confirm{position:relative;background:var(--g-fill)!important;border-color:transparent!important;-webkit-backdrop-filter:var(--g-blur-sm);backdrop-filter:var(--g-blur-sm)}
+.ccw .confirmx__card{background:rgb(var(--c-white-rgb) / .8)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+
+/* ---- RESULTS (desktop) ---- */
+.ccw .res-scroll{background:transparent!important}
+.ccw .crow:nth-child(even){background:rgb(var(--c-white-rgb) / .32)}
+.ccw .crow{border-bottom-color:rgb(var(--c-primary-794-rgb) / .07)}
+.ccw .crow__cell.is-hl{background:rgb(var(--c-accent-424-rgb) / .08)}
+.ccw .res-foot{position:relative;background:rgb(var(--c-white-rgb) / .45)!important;-webkit-backdrop-filter:var(--g-blur-sm);backdrop-filter:var(--g-blur-sm);border-top:0!important;box-shadow:none!important}
+
+/* ---- RESULTS (mobile) ---- */
+.ccw .mscroll{background:transparent!important}
+.ccw .mdetail{background:rgb(var(--c-white-rgb) / .55)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:var(--g-spec)}
+.ccw .mdetail::after{border-radius:var(--radius-sheet) var(--radius-sheet) 0 0}
+.ccw .btile{background:rgb(var(--c-white-rgb) / .58)!important;border-color:rgb(var(--c-white-rgb) / .6)!important;box-shadow:0 12px 26px -18px rgb(var(--c-primary-794-rgb) / .4),inset 0 1px 0 var(--c-white)!important}
+.ccw .mfoot{position:relative;background:rgb(var(--c-white-rgb) / .5)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border-top:0!important}
+
+/* ---- MOBILE + FOLDED SHELL: the step sheet is a glass bottom sheet over the stage and the wall ---- */
+@media (max-width:699.98px),(max-width:820px) and (min-height:641px){
+  .ccw .sheet{gap:0;border-radius:0;overflow:visible;box-shadow:none!important}
+  .ccw .hero{border-radius:0;box-shadow:none}
+  .ccw .work{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;overflow:visible;border-radius:0}
+  .ccw .work::after{display:none}
+  /* glass lives on a pseudo-element: backdrop-filter on .body itself would trap the fixed Continue bar inside it */
+  .ccw .body{background:transparent!important;box-shadow:0 -10px 30px -16px rgb(var(--c-primary-861-rgb) / .5)}
+  .ccw .body::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+    background:rgb(var(--c-white-rgb) / .55);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .95)}
+  .ccw .foot{background:rgb(var(--c-neutral-019-rgb) / .94)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+    box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .95),0 -8px 24px -18px rgb(var(--c-primary-794-rgb) / .4)}
+}
+@media (min-width:700px) and (max-height:640px){
+  .ccw .sheet:not(.is-wide) .foot{background:rgb(var(--c-neutral-022-rgb) / .94)!important;-webkit-backdrop-filter:var(--g-blur-sm);backdrop-filter:var(--g-blur-sm)}
+  .ccw .sheet:not(.is-wide) .hero{border-radius:var(--radius-card) 0 0 var(--radius-card)}
+  .ccw .sheet{border-radius:var(--radius-card)}
+}
+/* ---- CONCENTRIC GEOMETRY (phones + folded): sheets sit 8px in from the screen edges with ~34px corners that echo the
+   device corners; inner shapes nest concentrically (sheet 34 - padding 16 = 18 for tiles and fields); bars float as glass */
+@media (max-width:699.98px),(max-width:820px) and (min-height:641px){
+  .ccw{--lg-r:34px;--lg-in:0px}
+  /* sheets and bars hug the screen edges (Ram); the rounded top corners keep the glass shape */
+  .ccw .sheet:not(.is-wide) .body{margin-left:var(--lg-in);margin-right:var(--lg-in);border-radius:var(--lg-r) var(--lg-r) 0 0!important}
+  .ccw .sheet.is-wide .body{margin:0!important;border-radius:0!important}
+  .ccw .sheet.is-wide .body::before{display:none}
+  /* brighter at the top so the glass stays crisp over the dark stage instead of turning grey */
+  .ccw .body::before{background:linear-gradient(180deg,rgb(var(--c-white-rgb) / .92) 0px,rgb(var(--c-white-rgb) / .74) 140px,rgb(var(--c-white-rgb) / .58) 320px)!important}
+  .ccw .bento .tile{border-radius:var(--radius-tile)!important}
+  .ccw .input,.ccw .select,.ccw .combo__ctrl,.ccw .pinput{border-radius:var(--radius-tile)!important}
+  .ccw .pinput__pre{border-radius:17px 0 0 17px}
+  .ccw .foot{width:auto!important;left:0!important;right:0!important;bottom:0!important;
+    border-radius:0!important;padding:10px 16px calc(14px + env(safe-area-inset-bottom))!important}
+  .ccw .screen__main{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
+  /* more air under the sheet's 34px rounded top: content starts clear of the curve (sheet radius = top padding) */
+  .ccw .screen__main{padding-top:34px!important}
+  .ccw .sheet[data-screen="thanks"] .screen__main{padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
+  /* results */
+  .ccw .mdetail{margin-left:var(--lg-in);margin-right:var(--lg-in);border-radius:var(--lg-r) var(--lg-r) 0 0!important;
+    background:linear-gradient(180deg,rgb(var(--c-white-rgb) / .9) 0px,rgb(var(--c-white-rgb) / .7) 140px,rgb(var(--c-white-rgb) / .56) 320px)!important}
+  .ccw .mdetail::after{border-radius:var(--lg-r) var(--lg-r) 0 0}
+  .ccw .mfoot{margin:0;border-radius:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important}
+  .ccw .mfoot::after{border-radius:0}
+}
+@media (prefers-reduced-transparency:reduce){
+  .ccw .work,.ccw .body::before,.ccw .foot,.ccw .mdetail,.ccw .mfoot,.ccw .res-foot{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgb(var(--c-white-rgb) / .94)!important}
+}
+.ccw .sharetoast{position:fixed;left:50%;bottom:28px;z-index:40;margin:0;transform:translate(-50%,12px);opacity:0;pointer-events:none;
+  padding:10px 18px;border-radius:var(--radius-pill);font-size:14px;font-weight:500;color:var(--navy);
+  background:rgb(var(--c-white-rgb) / .82);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:inset 0 1px 0 var(--c-white),0 12px 30px -12px rgb(var(--c-primary-794-rgb) / .4);transition:opacity .25s ease,transform .25s ease}
+.ccw .sharetoast.is-on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:699.98px) and (max-height:640px){.ccw .screen__main{padding-top:24px!important}}
+
+/* ---- THANK-YOU: success badge, reference ticket, Share + Done ---- */
+.ccw .done-badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:var(--c-white);margin:0 0 20px;
+  background:radial-gradient(110% 90% at 50% -20%,rgb(var(--c-white-rgb) / .5) 0%,rgb(var(--c-white-rgb) / 0) 60%),linear-gradient(180deg,var(--c-accent-416) 0%,var(--c-accent-559) 55%,var(--c-primary-690) 100%);
+  box-shadow:inset 0 1px 0 rgb(var(--c-white-rgb) / .6),inset 0 -4px 10px rgb(var(--c-primary-922-rgb) / .25),0 0 0 8px rgb(var(--c-accent-424-rgb) / .12),0 16px 30px -12px rgb(var(--c-accent-559-rgb) / .6);
+  animation:ccw-badgepop .6s var(--spring) .1s both}
+.ccw .done-badge svg{width:30px;height:30px}
+@keyframes ccw-badgepop{0%{transform:scale(.5);opacity:0}100%{transform:none;opacity:1}}
+.ccw .thanks .qhead .stitle{letter-spacing:-.02em}
+.ccw .ticket{margin-top:26px!important;padding:22px 24px!important;border-radius:var(--radius-sheet)!important}
+.ccw .ticket__k{margin:0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ccw .ticket__row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.ccw .ticket__num{margin-right:auto}
+.ccw .ticket__num{font-size:26px;font-weight:600;letter-spacing:.04em;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ccw .ticket__copy{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:36px;padding:0 14px;border-radius:var(--radius-pill);cursor:pointer;
+  font:600 13px/1 var(--font-sans);color:var(--blue);background:rgb(var(--c-accent-424-rgb) / .08);border:1px solid rgb(var(--c-accent-424-rgb) / .18)}
+.ccw .ticket__copy:hover{background:rgb(var(--c-accent-424-rgb) / .14)}
+.ccw .ticket__copy svg{width:15px;height:15px}
+.ccw .ticket__cut{height:0;margin:20px -24px;border-top:1.5px dashed rgb(var(--c-primary-794-rgb) / .14);position:relative}
+.ccw .ticket__cut::before,.ccw .ticket__cut::after{content:"";position:absolute;top:-9px;width:16px;height:16px;border-radius:50%;background:rgb(var(--c-accent-051-rgb) / 1);box-shadow:inset 0 0 0 1px rgb(var(--c-white-rgb) / .7)}
+.ccw .ticket__cut::before{left:-8px}.ccw .ticket__cut::after{right:-8px}
+.ccw .ticket__next{display:flex;gap:14px;align-items:flex-start}
+.ccw .ticket__ic{flex:none;width:40px;height:40px;border-radius:var(--radius-control);display:grid;place-items:center;color:var(--blue);background:rgb(var(--c-accent-424-rgb) / .09)}
+.ccw .ticket__ic svg{width:20px;height:20px}
+.ccw .ticket__h{margin:0 0 4px;font-size:15px;font-weight:600;color:var(--navy)}
+.ccw .ticket__p{margin:0;font-size:14px;line-height:1.55;color:var(--ink-2)}
+.ccw .thanks__cta{display:flex;gap:12px;margin-top:24px}
+.ccw .thanks__cta .btn-ghost{padding:16px 24px}
+.ccw .thanks__cta .btn-ghost svg{width:18px;height:18px;transform:none!important}
+.ccw .thanks__cta .btn-navy{padding:17px 52px}
+@media (max-width:699.98px),(max-width:820px) and (min-height:641px){
+  .ccw .thanks{text-align:center}
+  .ccw .done-badge{margin:4px auto 16px;width:58px;height:58px}
+  .ccw .done-badge svg{width:27px;height:27px}
+  .ccw .thanks .qhead .ssub{max-width:300px;margin-left:auto;margin-right:auto}
+  .ccw .ticket{text-align:left;margin-top:22px!important;padding:18px 18px!important;border-radius:var(--radius-tile)!important}
+  .ccw .ticket__cut{margin:16px -18px}
+  .ccw .ticket__num{font-size:22px}
+  .ccw .thanks__cta{margin-top:20px}
+  .ccw .thanks__cta .btn-ghost{flex:0 0 auto;min-height:52px;padding:0 20px}
+  .ccw .thanks__cta .btn-navy{flex:1;width:auto;min-height:52px;padding:0 20px;justify-content:center}
+  .ccw .ticket__row{flex-wrap:wrap}
+  .ccw .ticket__num{flex:1 0 100%;margin-bottom:4px}
+}
+@media (max-width:699.98px) and (max-height:640px){
+  .ccw .done-badge{display:none}
+  .ccw .ticket__num{font-size:19px}
+  .ccw .ticket__next .ticket__ic{display:none}
+}
+@media (min-width:700px) and (max-height:640px){
+  .ccw .done-badge{width:48px;height:48px;margin-bottom:12px}
+  .ccw .done-badge svg{width:22px;height:22px}
+  .ccw .ticket{margin-top:14px!important;padding:16px 18px!important}
+  .ccw .ticket__cut{margin:12px -18px}
+  .ccw .ticket__num{font-size:20px}
+  .ccw .thanks__cta{margin-top:14px}
+}
+
+/* ---- SHARE PREVIEW SHEET ---- */
+.ccw .shsheet{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:24px;background:rgb(var(--c-primary-912-rgb) / .5);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:ccw-rise .25s ease both}
+.ccw .shsheet[hidden]{display:none}
+.ccw .shsheet__panel{position:relative;width:min(440px,100%);max-height:calc(100dvh - 48px);overflow:auto;padding:26px 24px 22px;border-radius:32px;
+  background:rgb(var(--c-neutral-019-rgb) / .9);-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%);
+  box-shadow:inset 0 1px 0 var(--c-white),0 30px 70px -20px rgb(var(--c-primary-912-rgb) / .6)}
+.ccw .shsheet__x{position:absolute;top:14px;right:14px;width:44px;height:44px;border:0;background:none;color:var(--c-primary-724);display:grid;place-items:center;cursor:pointer}
+.ccw .shsheet__x svg{width:22px;height:22px}
+.ccw .shsheet__t{margin:0 40px 4px 0;font-size:20px;font-weight:600;color:var(--navy)}
+.ccw .shsheet__s{margin:0 0 16px;font-size:14px;color:var(--ink-2)}
+.ccw .shsheet__img{display:flex;justify-content:center;min-height:120px}
+.ccw .shsheet__img img{display:block;width:auto;max-width:100%;max-height:min(60dvh,520px);border-radius:var(--radius-sheet);background:var(--c-primary-853);box-shadow:0 18px 40px -20px rgb(var(--c-primary-794-rgb) / .5)}
+.ccw .shsheet__cta{display:flex;gap:10px;margin-top:18px}
+.ccw .shsheet__cta .btn-ghost,.ccw .shsheet__cta .btn-navy{flex:1;justify-content:center;min-height:52px;padding:0 16px}
+.ccw .shsheet__cta svg{width:18px;height:18px;transform:none!important}
+@media (max-width:699.98px){
+  .ccw .shsheet{place-items:end center;padding:0}
+  .ccw .shsheet__panel{width:100%;border-radius:34px 34px 0 0;padding:22px 16px calc(16px + env(safe-area-inset-bottom));max-height:94dvh}
+  .ccw .shsheet__img img{max-height:56dvh}
+}
+
+/* ---- CARD SELECTOR: current card + Change card -> bottom sheet with the full range ---- */
+.ccw .cpk__btn{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px 10px 10px;border-radius:var(--radius-tile);cursor:pointer;text-align:left;
+  font:inherit;color:var(--navy);background:rgb(var(--c-white-rgb) / .6);border:1px solid rgb(var(--c-white-rgb) / .9);box-shadow:inset 0 1px 0 var(--c-white),0 8px 20px -14px rgb(var(--c-primary-794-rgb) / .35)}
+.ccw .cpk__img{flex:none;width:64px;height:40px;border-radius:6px;object-fit:cover;box-shadow:0 4px 10px -4px rgb(var(--c-primary-794-rgb) / .4)}
+.ccw .cpk__txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ccw .cpk__k{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ccw .cpk__n{font-size:15px;font-weight:600;line-height:1.25}
+.ccw .cpk__chg{flex:none;display:inline-flex;align-items:center;gap:4px;padding:8px 12px;border-radius:var(--radius-pill);font-size:13px;font-weight:600;color:var(--blue);background:rgb(var(--c-accent-424-rgb) / .08)}
+.ccw .cpk__chg svg{width:16px;height:16px}
+.ccw .cpk__btn:focus-visible{outline:3px solid var(--c-accent-424);outline-offset:2px}
+.ccw .csheet{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;background:rgb(var(--c-primary-912-rgb) / .45);animation:ccw-rise .2s ease both}
+.ccw .csheet[hidden]{display:none}
+.ccw .csheet__panel{width:100%;max-width:640px;max-height:86dvh;display:flex;flex-direction:column;border-radius:34px 34px 0 0;padding:8px 16px 0;
+  background:rgb(var(--c-neutral-019-rgb) / .94);-webkit-backdrop-filter:blur(30px) saturate(190%);backdrop-filter:blur(30px) saturate(190%);box-shadow:inset 0 1px 0 var(--c-white),0 -20px 50px -20px rgb(var(--c-primary-912-rgb) / .5)}
+.ccw .csheet__grab{width:40px;height:5px;border-radius:3px;background:rgb(var(--c-primary-794-rgb) / .18);margin:4px auto 10px}
+.ccw .csheet__hd{display:flex;align-items:center;justify-content:space-between}
+.ccw .csheet__hd h2{margin:0;font-size:19px;font-weight:600;color:var(--navy)}
+.ccw .csheet__x{width:44px;height:44px;border:0;background:none;color:var(--c-primary-724);display:grid;place-items:center;cursor:pointer}
+.ccw .csheet__x svg{width:22px;height:22px}
+.ccw .csheet__search{display:flex;align-items:center;gap:8px;margin:6px 0 4px;padding:0 14px;min-height:46px;border-radius:14px;background:var(--c-white);border:1px solid var(--c-accent-083);color:var(--muted)}
+.ccw .csheet__search svg{width:18px;height:18px;flex:none}
+.ccw .csheet__search input{flex:1;min-width:0;border:0;outline:0;background:none;font:500 15px/1.2 var(--font-sans);color:var(--navy)}
+.ccw .csheet__search:focus-within{border-color:var(--c-accent-424);box-shadow:0 0 0 4px rgb(var(--c-accent-512-rgb) / .13)}
+.ccw .csheet__list{overflow-y:auto;padding:4px 0 calc(20px + env(safe-area-inset-bottom));overscroll-behavior:contain}
+.ccw .csheet__g{margin:16px 4px 6px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ccw .csheet__row{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border:0;border-radius:14px;background:none;cursor:pointer;text-align:left;font:inherit;color:var(--navy)}
+.ccw .csheet__row[hidden],.ccw .csheet__g[hidden]{display:none}
+.ccw .csheet__row:hover{background:rgb(var(--c-white-rgb) / .8)}
+.ccw .csheet__row.is-on{background:rgb(var(--c-accent-424-rgb) / .09)}
+.ccw .csheet__row img{flex:none;width:56px;height:35px;border-radius:5px;object-fit:cover;box-shadow:0 3px 8px -3px rgb(var(--c-primary-794-rgb) / .35)}
+.ccw .csheet__t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ccw .csheet__n{font-size:15px;font-weight:600}
+.ccw .csheet__s{font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ccw .csheet__ck{flex:none;width:20px;height:20px;color:var(--c-accent-424)}
+.ccw .csheet__none{margin:24px 4px;font-size:14px;color:var(--muted)}
+
+/* ---- MOBILE PICKER: the nationality list becomes a full-screen sheet above the keyboard ---- */
+.ccw .combo__hd{display:none}
+/* lift the work column above the card stage while the picker is open (it lives inside an isolated stacking context) */
+.ccw-combo-sheet .ccw .work,.ccw-combo-sheet .ccw .body{position:relative;z-index:200!important;isolation:auto!important}
+.ccw-combo-sheet .ccw .foot{z-index:1!important}
+.ccw .combo.is-sheet .combo__pop{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--vvh,100dvh);z-index:90;margin:0;border-radius:0;
+  display:flex;flex-direction:column;gap:10px;padding:max(12px,env(safe-area-inset-top)) 16px 12px;border:0;
+  background:var(--c-neutral-019)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none}
+.ccw .combo.is-sheet .combo__hd{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.ccw .combo__ttl{font-size:19px;font-weight:600;color:var(--navy)}
+.ccw .combo__close{border:0;background:none;font:600 16px/1 var(--font-sans);color:var(--blue);padding:12px 4px;cursor:pointer}
+.ccw .combo.is-sheet .combo__search{font-size:16px;flex:none}
+.ccw .combo__list:focus{outline:none}
+.ccw .combo.is-sheet .combo__list{flex:1;min-height:0;max-height:none!important;overflow-y:auto;overscroll-behavior:contain}
+.ccw .combo.is-sheet .combo__opt{padding:15px 12px;font-size:16px;border-bottom:1px solid rgb(var(--c-primary-794-rgb) / .06);border-radius:0}
+
+/* thank-you badge: plays once - the circle springs in, the tick draws itself, one soft ring ripples out */
+.ccw .done-badge{position:relative}
+.ccw .done-badge::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 2px rgb(var(--c-accent-424-rgb) / .45);opacity:0;pointer-events:none;
+  animation:ccw-badgering .9s cubic-bezier(.2,.7,.3,1) .55s 1 forwards}
+.ccw .done-badge svg path{stroke-dasharray:22;stroke-dashoffset:22;animation:ccw-tickdraw .45s cubic-bezier(.65,0,.35,1) .45s 1 forwards}
+@keyframes ccw-tickdraw{to{stroke-dashoffset:0}}
+@keyframes ccw-badgering{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+@media (prefers-reduced-motion:reduce){.ccw .done-badge svg path{stroke-dashoffset:0;animation:none}.ccw .done-badge::after{display:none}}
+/* thank-you tick: Lottie success animation; the CSS badge underneath is the fallback until it loads (or if it cannot) */
+.ccw .done-lottie{position:absolute;left:50%;top:50%;width:calc(100% * var(--lk,2.76));height:calc(100% * var(--lk,2.76));transform:translate(-50%,-50%);pointer-events:none;display:none}
+.ccw .done-badge.is-lottie{background:none!important;box-shadow:none!important;animation:none}
+.ccw .done-badge.is-lottie>svg,.ccw .done-badge.is-lottie::after{display:none}
+.ccw .done-badge.is-lottie .done-lottie{display:block}
+/* About step: two groups, "About you" (decides the match) then "Your contact details" (for the follow-up) */
+.ccw .fgroup{border:0;margin:0;padding:0;min-width:0}
+.ccw .fgroup__h{float:left;width:100%;padding:0;margin:0 0 16px;font-size:16px;font-weight:600;color:var(--navy);letter-spacing:-.005em}
+.ccw .fgroup__h + *{clear:both}
+.ccw .fgroup--next{margin-top:28px;padding-top:22px;border-top:1px solid rgb(var(--c-primary-794-rgb) / .08)}
+@media (max-width:699.98px){.ccw .fgroup__h{margin-bottom:14px}.ccw .fgroup--next{margin-top:22px;padding-top:18px}}
+/* educational copy concepts */
+.ccw .ssub b{font-weight:600;color:var(--navy)}
+.ccw .ssub.is-new{animation:ccw-whyin .35s ease}
+@keyframes ccw-whyin{from{opacity:.25;transform:translateY(3px)}to{opacity:1;transform:none}}
+/* range art from emiratesnbd.com is shot on navy with rounder corners: clip to its own corner so no navy shows */
+.ccw .fcard img[src*="cards/"],.ccw .ccard__face img[src*="cards/"]{border-radius:3.8% / 6%}
+.ccw .cardimg[src*="cards/"]{border-radius:3.8% / 6%}
+/* contact + thanks: the stage takes the chosen card's colours (same gradient as the results hero) */
+.ccw .htint{position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:0;transition:opacity .7s ease;
+  background:radial-gradient(70% 50% at 50% 45%,var(--thg) 0%,transparent 70%),radial-gradient(60% 45% at 12% 0%,rgb(var(--c-white-rgb) / .12) 0%,transparent 70%),linear-gradient(180deg,var(--th1) 0%,var(--th2) 50%,var(--th3) 100%)}
+.ccw .sheet.is-tinted .htint{opacity:1}
+.ccw .sheet.is-tinted .hero__floor,.ccw .sheet.is-tinted .bloom{opacity:.18;transition:opacity .7s ease}
+.ccw .mbg i[data-t="custom"]{background:
+  radial-gradient(75% 55% at 50% 58%,var(--thg,rgb(var(--c-accent-347-rgb) / .5)) 0%,transparent 70%),
+  radial-gradient(60% 45% at 12% 0%,rgb(var(--c-white-rgb) / .14) 0%,transparent 70%),
+  linear-gradient(180deg,var(--th1,var(--c-primary-629)) 0%,var(--th2,var(--c-primary-727)) 50%,var(--th3,var(--c-primary-818)) 100%)}
+.ccw [data-theme="custom"] .mbg i[data-t="custom"]{opacity:1}
+
+/* ============================================================
+   STATIC MARKUP - every screen and per-card variant is in index.html; JS shows one with [hidden]
+   ============================================================ */
+.ccw [hidden]:not(.mnav){display:none!important}
+.ccw .vx{display:contents}
+.ccw .wl__c,.ccw .wl__a{display:none;font-style:normal}
+.ccw .wl.is-mid .wl__c,.ccw .wl.is-last .wl__a{display:inline}
+.ccw .csheet__row:not(.is-on) .csheet__ck{display:none}
+
+/* ============================================================
+   QA FIXES (handover review)
+   ============================================================ */
+/* screen titles receive focus on every step change (keyboard / screen readers); no ring on a heading */
+.ccw h1[tabindex="-1"]:focus{outline:none}
+/* desktop column picker: never cut a card name mid-word; never smaller than 11px */
+.ccw .cpick .select{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
+/* phone landscape / short tablets: results put a light panel under the close button, so the white X disappears */
+@media (min-width:700px) and (max-height:640px){
+  .ccw .sheet.is-wide:has(.screen--resm:not([hidden])) .closeb{color:var(--navy)}
+  .ccw .sheet.is-wide:has(.screen--resm:not([hidden])) .closeb:focus-visible{outline-color:var(--navy)}
+}
+
+/* =====================================================================
+   STANDALONE PAGE - only for index.html opened on its own (<body class="ccw-page">):
+   no page margin, full-height light background wall and its slow glow.
+   Harmless when the wizard is embedded in another site: nothing there has the class .ccw-page.
+   ===================================================================== */
+.ccw-page{-webkit-text-size-adjust:100%;box-sizing:border-box}
+.ccw-page{margin:0;font-family:var(--font-sans);
+  color:var(--ink);background:linear-gradient(180deg,var(--c-neutral-024) 0%,var(--c-accent-053) 100%);background-attachment:fixed;min-height:100vh;-webkit-font-smoothing:antialiased}
+.ccw-page{background:
+  radial-gradient(42% 52% at 88% 8%,rgb(var(--c-accent-424-rgb) / .42) 0%,rgb(var(--c-accent-424-rgb) / 0) 70%),
+  radial-gradient(48% 58% at 6% 96%,rgb(var(--c-accent-249-rgb) / .62) 0%,rgb(var(--c-accent-249-rgb) / 0) 70%),
+  radial-gradient(34% 40% at 58% 60%,rgb(var(--c-accent-284-rgb) / .30) 0%,rgb(var(--c-accent-284-rgb) / 0) 70%),
+  radial-gradient(30% 36% at 22% 12%,rgb(var(--c-glow-violet-225-rgb) / .26) 0%,rgb(var(--c-glow-violet-225-rgb) / 0) 70%),
+  linear-gradient(160deg,var(--c-accent-037) 0%,var(--c-accent-066) 100%) fixed!important}
+.ccw-page::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:radial-gradient(22% 26% at 30% 40%,rgb(var(--c-accent-424-rgb) / .22),transparent 70%),radial-gradient(20% 24% at 72% 70%,rgb(var(--c-accent-267-rgb) / .28),transparent 70%);
+  animation:ccw-lgdrift 26s ease-in-out infinite alternate}
+@keyframes ccw-lgdrift{0%{transform:translate3d(-3%,-2%,0) scale(1)}100%{transform:translate3d(4%,3%,0) scale(1.08)}}
