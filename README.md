@@ -2,7 +2,7 @@
 
 A guided "find your card" wizard for credit cards. The customer answers a few questions about spending and benefits, compares three recommended cards, picks one and leaves their details.
 
-Plain HTML, CSS and JavaScript. No framework, no build step, nothing to install.
+Plain HTML, CSS and JavaScript, with jQuery, Select2 (dropdowns), Parsley (form validation rules, run by the CMS team) and Inputmask (mobile number format) from CDNs. No framework, no build step, nothing to install.
 
 ## Run it
 
@@ -16,15 +16,11 @@ No Python, Node or web server is needed. On a web server it works the same: copy
 
 ```
 index.html            all markup and content (questions, cards, results, thank-you screen)
-css/main.css          all styles: design tokens at the top, wizard styles (scoped to .ccw), demo page background
-js/core.js            shared helpers, answers state, card catalogue
-js/wizard.js          question steps, tiles, form and validation
-js/results.js         results: desktop comparison table and mobile slides
-js/thanks.js          submission hook, thank-you screen, share image
-js/stage.js           left panel: card carousel and animations
-js/main.js            entry point (loaded last)
+css/ccwizardv3.css    all styles: design tokens at the top, wizard styles (scoped to .ccw), demo page background
+css/ccwizardv3.min.css the same, minified (the file index.html loads; regenerate after editing, see HANDOVER.md)
+js/ccw.js             all the wizard's JavaScript in one file (sections: core, wizard, results,
+                      thank you + share, stage, success animation, start)
 js/vendor/            lottie player (success tick animation)
-animations/success.js success tick animation data
 images/               card images, icons, logo
 HANDOVER.md           integration guide for CMS / backend teams
 ```
@@ -34,7 +30,8 @@ HANDOVER.md           integration guide for CMS / backend teams
 - **All content lives in `index.html`.** JavaScript does not inject any text or data; it only shows and hides steps, runs the animations and drives the card carousel.
 - **The results are static.** The results screen always shows Voyager, Skywards and Marriott (set by `data-results` on `<ol id="catalog">`). No card-matching logic runs in the browser.
 - **The CSS is scoped.** Every rule sits under `.ccw` and the keyframe names start with `ccw-`, so the wizard does not affect the page it is embedded in.
-- **There is one global name.** The scripts share `window.CCW` and add nothing else to `window`.
+- **One global name of its own.** The wizard's scripts share `window.CCW`; the libraries add `jQuery` / `$`.
+- **Forms use Select2, Parsley and Inputmask.** The dropdowns are real `<select>`s shown with Select2 and styled to match the form; validation rules and messages are `data-parsley-*` attributes in the markup (the wizard does not run them; the CMS team does); the mobile number format is `data-inputmask-*` attributes.
 
 ## Integration
 
@@ -42,13 +39,13 @@ See **[HANDOVER.md](HANDOVER.md)** for:
 
 - replacing the static cards with CMS or API data
 - embedding the wizard in an existing page
-- connecting the form submission (`submitChoice` in `js/thanks.js`)
+- connecting the form submission (`submitContact` in `js/ccw.js`)
 - re-theming for another brand through the design tokens
 - caching (`?v=` on the CSS and script links, raised on every release)
 - a test checklist after integration
 
 ## Not connected yet
 
-- **Form submission:** the thank-you screen shows a made-up reference number until `submitChoice` calls the real API.
+- **Form submission:** the thank-you screen shows a made-up reference number until `submitContact` calls the real API.
 - **Card content:** the card names, benefits and images are placeholders for the CMS to replace.
-- **Font:** Plus Jakarta Sans loads from Google Fonts. Self-host it if the target network blocks Google.
+- **Font and libraries:** Plus Jakarta Sans (Google Fonts) and jQuery, Select2, Parsley and Inputmask (CDNs) load from the internet. Self-host them if the target network blocks outside sites.
