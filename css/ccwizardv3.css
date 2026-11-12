@@ -308,7 +308,7 @@
   background:none;color:var(--c-primary-724);cursor:pointer;display:grid;place-items:center;transition:opacity .16s ease}
 /* icon-only buttons: no plate; the 44px box stays as the tap target */
 .ccw .closeb svg{width:22px;height:22px}
-.ccw .topback{position:absolute;left:12px;top:12px;z-index:14;width:44px;height:44px;border-radius:var(--radius-control);
+.ccw .topback{position:absolute;inset-inline-start:12px;top:12px;z-index:14;width:44px;height:44px;border-radius:var(--radius-control);
   border:0;background:none;color:var(--c-white);display:none;place-items:center;cursor:pointer;transition:opacity .16s ease}
 .ccw .topback svg{width:22px;height:22px}
 .ccw .topback:focus-visible{outline-color:var(--c-white)}
@@ -391,7 +391,7 @@
 .ccw .pips i.on{background:var(--blue)}
 
 /* FIELDS */
-.ccw .form{text-align:left}
+.ccw .form{text-align:start}
 /* the gap above the fields sits on the first field, not the <form>, so it survives a host page making the form display:contents */
 .ccw .form > .field:first-child{margin-top:28px}
 .ccw .field + .field{margin-top:22px}
@@ -427,12 +427,13 @@
 .ccw .combo{position:relative}
 .ccw .combo__ctrl{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:56px;background:var(--c-white);
   border:1px solid var(--field-line);border-radius:var(--radius-control);padding:16px 18px;font:500 16px/1.3 var(--font-sans);
-  color:var(--navy);cursor:pointer;text-align:left;box-shadow:var(--shadow-chip)}
+  color:var(--navy);cursor:pointer;text-align:start;box-shadow:var(--shadow-chip)}
 .ccw .combo__ctrl.is-empty{color:var(--hint);font-weight:400}
 .ccw .combo.is-open .combo__ctrl{border-color:var(--blue);box-shadow:0 0 0 4px rgb(var(--c-accent-512-rgb) / .14)}
 .ccw .combo__ctrl svg{width:14px;height:9px;flex:none;color:var(--c-primary-725);transition:transform .2s ease}
 .ccw .combo.is-open .combo__ctrl svg{transform:rotate(180deg)}
-.ccw .combo .select2-dropdown{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:20;scroll-margin-bottom:112px;background:var(--c-white);border:1px solid var(--c-accent-058);
+/* left only (no right): Select2 sizes the list to the field; with both set, right-to-left pages would align it by its right edge and push it off to the left */
+.ccw .combo .select2-dropdown{position:absolute;left:0;top:calc(100% + 8px);z-index:20;scroll-margin-bottom:112px;background:var(--c-white);border:1px solid var(--c-accent-058);
   border-radius:14px;box-shadow:0 18px 40px rgb(var(--c-primary-843-rgb) / .16);padding:8px;display:block}
 /* when Select2 has to open the list above the field */
 .ccw .combo .select2-dropdown--above{top:-8px}
@@ -469,6 +470,9 @@
 .ccw .btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--c-white);color:var(--navy);border:1px solid var(--blue-line);
   border-radius:var(--r-pill);font:600 16px/1 var(--font-sans);padding:16px 26px;min-height:54px;cursor:pointer;transition:background-color .16s ease}
 .ccw .btn-ghost svg{width:16px;height:16px}
+/* right-to-left pages (Arabic): Continue / Back and the phone back arrow point the other way */
+[dir="rtl"] .ccw .foot .btn-navy svg,[dir="rtl"] .ccw .foot .btn-ghost svg,[dir="rtl"] .ccw .topback svg,
+.ccw[dir="rtl"] .foot .btn-navy svg,.ccw[dir="rtl"] .foot .btn-ghost svg,.ccw[dir="rtl"] .topback svg{transform:scaleX(-1)}
 
 /* leave-confirmation dialog */
 .ccw .confirmx{position:fixed;inset:0;background:rgb(var(--c-primary-884-rgb) / .48);display:grid;place-items:center;z-index:60;padding:24px}
