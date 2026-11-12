@@ -140,7 +140,8 @@
   --c-glow-gold-969-rgb: 10 8 6;           --c-glow-gold-969: rgb(var(--c-glow-gold-969-rgb));  /* #0a0806 */
 
   /* ---------- 2. TYPOGRAPHY ---------- */
-  --font-sans:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* 'Dirham Symbol' first, as in v3-components: the host page's @font-face limits it to the dirham glyph (U+EADF), so every other character still uses Plus Jakarta Sans */
+  --font-sans:'Dirham Symbol','Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 
   /* ---------- 3. SHAPE ---------- */
   --radius-control:12px;  /* buttons, inputs, small controls */

@@ -293,7 +293,7 @@ The palette keeps every shade the original design used (98 colours), so the curr
 - **Answers are only displayed**, never scored: they highlight tiles, change the subtitle line and show as pills in the left panel.
 - **A page, not a pop-up:** the close (x) button and the leave dialog are hidden by CSS (V6 DESIGN section of `css/ccwizardv3.css`); their markup stays in case a pop-up version is wanted again.
 - **Manchester United** is a closed card: it is not offered in the column pickers or the "Change card" sheet. Its other markup stays, in case it returns.
-- **Caching:** the CSS and script links in `index.html` end in `?v=18`. **Raise that number on every release** (e.g. `?v=19` on all of them), or returning visitors may run old cached files against the new HTML and the wizard will not start.
+- **Caching:** the CSS and script links in `index.html` end in `?v=19`. **Raise that number on every release** (e.g. `?v=20` on all of them), or returning visitors may run old cached files against the new HTML and the wizard will not start.
 - **Minified CSS:** `index.html` loads `css/ccwizardv3.min.css`. Edit `css/ccwizardv3.css`, then regenerate the minified file (Node.js needed, nothing installed in the project):
 
   ```bash
